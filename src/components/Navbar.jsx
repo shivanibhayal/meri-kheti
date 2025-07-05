@@ -3,14 +3,16 @@ import img from "../assets/images/khetilogo.png";
 import styles from "../assets/css/Navbar.module.css";
 import { CiSearch } from "react-icons/ci";
 import { IoClose } from "react-icons/io5"; // Close icon
+import {Link} from "react-router-dom";
 const Navbar = () => {
   const [openSearch,setOpenSearch]=useState(true); 
   return (
    <nav className="navbar navbar-expand-lg navbar-light ">
   <div className="container-fluid">
     <div className="col-3">
-
-    <a className={`navbar-brand {styles.imgbrand}`} href="#"><img src={img} alt="" className={`img-fluid ${styles.navimg}`}/></a>
+    <Link className={`navbar-brand {styles.imgbrand}`} to="/khetilogo">
+      <img src={img} alt="" className={`img-fluid ${styles.navimg}`}/>
+      </Link>
     </div>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -106,7 +108,9 @@ const Navbar = () => {
           <CiSearch className='fs-3 mt-2 fw-bold' onClick={()=>setOpenSearch(!openSearch)}/>
         </li>
         <li>
+          <Link to="/login">
           <button className='border-0 rounded-3 ms-2 mt-2 fw-bold p-1 loginbtn'>Login</button>
+          </Link>
         </li>
       </ul>:
     <form action="">
