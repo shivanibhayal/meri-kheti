@@ -38,5 +38,12 @@ background-image: url("https://cdn-icons-png.flaticon.com/512/2985/2985161.png")
 .loginbtn:hover{
 background-color: rgb(14, 102, 14);
 }
+.loginmain{
+  padding-left:35rem;
+  padding-top:8rem;
+}
+.logbtn{
+  width: 180px;
+}
 
 
