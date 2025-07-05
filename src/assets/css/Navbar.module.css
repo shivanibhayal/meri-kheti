@@ -1,0 +1,28 @@
+.navimg{
+    width: 7rem;
+}
+.input{
+    height:45px;
+    width: 300px;
+    border:2px solid#d6d4d4;
+}
+.input:focus {
+  border-color: #198754 !important;
+  outline: none;
+}
+/* .hoverDropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0; 
+} */
+.hoverDropdown :global(.dropdown-menu) {
+  display: none;
+}
+
+.hoverDropdown:hover :global(.dropdown-menu) {
+  display: block !important;
+  margin-top: 0;
+}
+.liHover:hover{
+    background-color: #82cea6;
+  border-radius: 2rem;
+}

@@ -1,1 +1,42 @@
+/* slider css */
+
+
+.previousicon {
+background-image: url("https://cdn-icons-png.flaticon.com/512/2985/2985161.png") !important;
+    background-color:  white;
+    color: black;
+    border-radius: 24px;
+    
+} 
+.nexticon{
+    background-image: url("https://cdn-icons-png.flaticon.com/128/2985/2985179.png") !important;
+    background-color:  white;
+    color: black;
+    border-radius: 24px;
+    
+}
+/* for slider */
+@media (min-width:1200px){
+   .previousicon{
+     margin-left: -7rem;
+   } 
+   .nexticon{
+    margin-right: -7rem;
+   }
+}
+@media(max-width:576px){
+   .slide{
+    height: 100% !important;
+   } 
+  
+}
+
+ /* login btn css */
+ .loginbtn{
+  background-color: green;
+ }
+.loginbtn:hover{
+background-color: rgb(14, 102, 14);
+}
+
 
