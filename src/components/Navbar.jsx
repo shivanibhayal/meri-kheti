@@ -98,10 +98,6 @@ const Navbar = () => {
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item" href="#">हिंदी</a></li>
             <li><a className="dropdown-item" href="#">English</a></li>
-             <li><a className="dropdown-item" href="#">Kannada</a></li>
-              <li><a className="dropdown-item" href="#">Punjabi</a></li>
-               <li><a className="dropdown-item" href="#">தமிழ்</a></li>
-                <li><a className="dropdown-item" href="#">Telugu</a></li>
           </ul>
         </li>
         <li className={`nav-item ${styles.liHover}`}>
