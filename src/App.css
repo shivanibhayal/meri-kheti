@@ -46,4 +46,31 @@ background-color: rgb(14, 102, 14);
   width: 180px;
 }
 
+/* register page css */
+.registermain{
+  padding-left: 35%;
+  padding-top: 5%;
+}
+
+/* trending btn css */
+.trendingbtn{
+  background: rgb(69,120,78);
+}
+
+/* hr line css */
+.custom-hr{
+  height: 5px;
+  background-color: rgb(6, 119, 6);
+   border:none;
+   margin-top: -1px;
+}
+
+/* trendimg css */
+.trendimg{
+  height: 30%;
+  /* padding: 5px; */
+}
+.contourfarmingimg{
+  width: 100%;
+}
 
