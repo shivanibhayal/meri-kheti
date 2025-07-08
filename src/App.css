@@ -37,32 +37,37 @@ background-image: url("https://cdn-icons-png.flaticon.com/512/2985/2985161.png")
  }
 .loginbtn:hover{
 background-color: rgb(14, 102, 14);
+
 }
 .loginmain{
-  padding-left:35rem;
-  padding-top:8rem;
+  background: url(https://images.unsplash.com/photo-1511735643442-503bb3bd348a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y3JvcHN8ZW58MHx8MHx8fDA%3D);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 86vh; 
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .logbtn{
-  width: 180px;
+  width: 100%;
+}
+.registerbackground{
+  background-color: transparent;
+
+}
+.registerbackground:hover{
+background-color: rgb(166, 211, 166);
 }
 
+
 /* register page css */
-.registermain{
-  padding-left: 35%;
-  padding-top: 5%;
-}
+ 
 
 /* trending btn css */
 .trendingbtn{
   background: rgb(69,120,78);
-}
-
-/* hr line css */
-.custom-hr{
-  height: 5px;
-  background-color: rgb(13, 200, 13);
-   border:none;
-   margin-top: -1px;
 }
 
 /* trendimg css */
@@ -74,4 +79,26 @@ background-color: rgb(14, 102, 14);
 .contourfarmingimg{
   width: 100%;
 }
+
+/* login form css */
+
+  .form-container {
+  /* background-color: rgba(121, 119, 119, 0.75); */
+   background-color: transparent;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+/* to fixed navbar */
+/* .fixednavbar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1; 
+  background-color: white; 
+} */
+
 

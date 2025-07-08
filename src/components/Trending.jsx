@@ -11,11 +11,10 @@ const Trending = () => {
     <>
       <div className="container">
         <div className="row">
-          <div className="col-12">
-            <button className=" text-white border-0 rounded p-2 fw-bold fs-5 trendingbtn">
-              Trending
-            </button>
-            <hr className="custom-hr" />
+          <div className="col-12 border-bottom-1">
+            <h2 className="">
+                <span className="text-white rounded-1 fw-bold fs-5 trendingbtn px-2 py-1">Trending</span>
+            </h2>
           </div>
         </div>
         <div className="row">

@@ -4,10 +4,10 @@ import Trending from '../../components/Trending'
 
 const Home = () => {
   return (
-    <div>
+    <>
       <Slider/>
       <Trending/>
-    </div>
+    </>
   )
 }
 
