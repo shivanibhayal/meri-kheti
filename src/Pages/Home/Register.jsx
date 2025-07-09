@@ -107,7 +107,7 @@ const Register = () => {
     }
 
     return (
-        <div>
+        <div className='mainregister'>
             <form className='p-4  '  action="" onSubmit={handleRegister}>
 
                 <h3 className='fw-bold   text-center '> Sign up</h3>

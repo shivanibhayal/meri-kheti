@@ -19,7 +19,7 @@ const handleLogin=(e)=>{
 }
 
   return (
-    <div className='loginmain container-fluid position-relative'>
+    <div className='loginmain container-fluid'>
     <div className='row'>
 <form action="/login" onSubmit={handleLogin} className='form-container'>
 <h3 className='fw-bold mb-2'>Login here</h3>
