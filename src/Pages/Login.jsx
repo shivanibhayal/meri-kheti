@@ -24,7 +24,7 @@ const handleLogin=(e)=>{
 <form action="/login" onSubmit={handleLogin} className='form-container'>
 <h3 className='fw-bold mb-2'>Login here</h3>
 <label htmlFor='email' className='mt-3'>Email/Phone</label><br/>
-  <input type="text" id='email' name="email" value={email} onChange={(e)=>setEmail(e.target.value)} className='border-1 border-light rounded w-100 bg-transparent fw-bold'/><br/>
+  <input type="text" id='email' autoFocus name="email" value={email} onChange={(e)=>setEmail(e.target.value)} className='border-1 border-light rounded w-100 bg-transparent fw-bold'/><br/>
   <label htmlFor='password' className='mt-3'>Password</label><br/>
   <input type="password" id='password' value={password} onChange={(e)=>setPassword(e.target.value)} className='border-1 border-light rounded w-100 fw-bold bg-transparent' name="password"/><br/>
   <button type="submit" className='border-0 rounded-3  mt-3 fw-bold p-1 loginbtn logbtn'>Login</button>

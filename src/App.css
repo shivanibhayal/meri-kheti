@@ -55,6 +55,10 @@ background-color: rgb(14, 102, 14);
 .logbtn{
   width: 100%;
 }
+.submitbtn:hover{
+background-color: rgb(14, 102, 14) ;
+font-weight:bold;
+}
 .registerbackground{
   background-color: transparent;
 
@@ -62,13 +66,34 @@ background-color: rgb(14, 102, 14);
 .registerbackground:hover{
 background-color: rgb(166, 211, 166);
 }
+.mainregister{
+   background: url('https://images.unsplash.com/photo-1511735643442-503bb3bd348a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y3JvcHN8ZW58MHx8MHx8fDA%3D');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 
+}
 
 /* register page css */
   .mainregister{
     margin-top: 7rem;
   }
-
+.innerdivregister{
+min-width: 100%;
+max-width: 600px;
+ background-color: rgb(240, 240, 179) !important;
+ opacity: 0.7;
+ 
+height: 100%;
+ padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3) !important;
+}
 /* trending btn css */
 .trendingbtn{
   background: rgb(69,120,78);
@@ -86,72 +111,71 @@ background-color: rgb(166, 211, 166);
 
 /* login form css */
 
-  .form-container {
-  /* background-color: rgba(121, 119, 119, 0.75); */
-   background-color: transparent;
-  padding: 30px;
+  .form-container{
+   background-color: rgb(240, 240, 179) !important;
+ opacity: 0.7;
+  padding: 30px !important;
   border-radius: 10px;
-  width: 100%;
+  min-width:100% !important;
   height: 100%;
-  max-width: 500px;
+  max-width: 600px !important;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   margin-top: 7rem !important;
-  
 }
-/* to fixed navbar */
-/* .fixednavbar{
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1; 
-  background-color: white; 
-} */
-
-
-
-
-.auth-box {
-  position: relative;
-  width: 600px;
-  height: 400px;
-  overflow: hidden;
-  border-radius: 12px;
-  display: flex;
-  background-color: #f8f9fa;
+.form-container>label{
+   color: black !important;
+  font-weight: bold;
+}
+ .form-container>input{
+border: 1px solid black !important;
+ }
+.form-control:focus {
+  box-shadow: none !important;
+}
+.form-floating > label {
+  color: black !important;
+  font-weight: bold;
 }
 
-.slider-container {
-  display: flex;
-  width: 200%;
-  transition: transform 0.5s ease-in-out;
+.form-check-label{
+  color: black !important;
+  font-weight: bold;
+}
+.form-label{
+   color: black !important;
+  font-weight: bold;
+}
+.form-check-input{
+  font-weight: bold;
+  border: 1px solid black !important;
+}
+.form-check-input:checked{
+    box-shadow: 0 0 20px rgba(6, 6, 6, 0.2) !important;
+    background-color: black !important;
+}
+.form-control {
+ font-weight: bold;
+  color: black !important; 
+  background-color: transparent;
+  border: 1px solid rgb(155, 151, 151) !important;
+}
+ .form-control{
+  border: 1px solid rgb(155, 151, 151) !important;
+ }
+
+.inputdiv{
+   max-height:100%  !important;
+  width: 100% ;
+  padding: 0 0 !important;
+}
+.inputdivaddress{
+  width: 100%;
+}
+.mainregister{
+height: 100%;
+width:100%;
 }
 
-.form-box {
-  width: 50%;
-  padding: 30px;
-  background-color: white;
-}
 
-/* Slide Effect */
-.show-login {
-  transform: translateX(0%);
-}
-.show-signup {
-  transform: translateX(-50%);
-}
 
-.toggle-panel {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%;
-  background-color: #e9ecef;
-  padding: 40px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
+
