@@ -35,5 +35,6 @@
   background-color: white  !important;
   height: 80px  !important; 
 }
-.navTogglerIcon{
+.navLoginBtn:hover{
+color: white !important;
 }

@@ -1,8 +1,42 @@
 .container{
     margin-top: 7rem;
+}
+.borderchng{
+    border-top-left-radius: 30px;
+}
+.borderchng:hover{
+    background-color: black;
+    color: white;
+    transform: scale(1.1); 
+    transition: all 1s;
+}
+.borderchng2{
+    border-bottom-right-radius: 30px;
+}
+.borderchng2:hover{
+     background-color: black;
+    color: white;
+    transform: scale(1.1); 
+      transition: all 1s;
+}
+.loginmaindiv{
+    margin-top: 90px;
+}
+.formbtn{
+    background-color:  #198754 !important;
+}
+.formbtn:hover{
+background-color: rgb(12, 78, 12) !important;
+color: white !important;
+transform: scale(1.1); 
+      transition: all 1s;
 
 }
-
+.changeBg{
+    padding: 20px;
+    box-shadow: 0px 0px 5px 2px green;
+    border-radius: 15px;
+}
 
 
 

@@ -1,0 +1,30 @@
+/* loginAnimations.css */
+@keyframes formEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes formExit {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+}
+
+.form-animate-enter {
+  animation: formEnter 0.6s ease-out forwards;
+}
+
+.form-animate-exit {
+  animation: formExit 0.5s ease-in forwards;
+}
