@@ -105,7 +105,7 @@ const Navbar = () => {
                 </li>
                 <li>
                   <Link to="/login">
-                    <button className='border-0 rounded-3 ms-2 mt-2 fw-bold p-1 loginbtn'>Login</button>
+                    <button className='border-0 rounded-3 ms-2 mt-2 fw-bold p-1 '>Login</button>
                   </Link>
                 </li>
               </ul> :
