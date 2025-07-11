@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../assets/css/login.css";
+import axios from 'axios';
 import Styles from "./Login.module.css";
 
 const Login = () => {
@@ -24,9 +25,9 @@ const Login = () => {
   //   setFormData((prev) => ({ ...prev, [id]: value }));
   // };
 
-  const handleFileChange = (e) => {
-    setFormData((prev) => ({ ...prev, profile: e.target.files[0] }));
-  };
+  // const handleFileChange = (e) => {
+  //   setFormData((prev) => ({ ...prev, profile: e.target.files[0] }));
+  // };
 
   const validateStep = () => {
     if (formStep === 1) {
@@ -62,7 +63,20 @@ const Login = () => {
 
   const handleSubmit =(e) => {
     e.preventDefault();
-    
+    axios.post('http://192.168.1.10:4000/api/user/register',{
+      name:name,
+
+    })
+.then(result=>{
+  console.log(result);
+})
+.catch(error=>{
+  console.log(error);
+  
+}
+
+)
+
   }; 
 
   return (
