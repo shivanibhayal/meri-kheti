@@ -31,7 +31,7 @@ const Login = () => {
 
   const validateStep = () => {
     if (formStep === 1) {
-      return name && email && password && phone && gender && profile;
+      return name && email && password && phone && gender ;
     }
     
     if (formStep === 2) {
@@ -59,33 +59,62 @@ const Login = () => {
     setFormStep((prev) => prev - 1);
   };
 
-  const handleSubmit =(e) => {
-    e.preventDefault();
-    axios.post('http://192.168.1.10:4000/api/user/register',{
-      name:name,
-      email:email,
-      password:password,
-      phone:phone,
-      gender:gender,
-      profile:profile,
-      village:village,
-      state:state,
-      farmerId:farmerId,
-      district:district,
-      pincode:pincode,
-      address:address
-    })
-.then(result=>{
-  console.log(result);
-})
-.catch(error=>{
-  console.log(error);
+//   const handleSubmit =(e) => {
+//     e.preventDefault();
+//     axios.post('http://192.168.1.4:4000/api/user/register',{
+//       name:name,
+//       email:email,
+//       password:password,
+//       phone:phone,
+//       gender:gender,
+//       profile:profile,
+//       village:village,
+//       state:state,
+//       farmerId:farmerId,
+//       district:district,
+//       pincode:pincode,
+//       address:address
+//     })
+// .then(result=>{
+//   console.log(result);
+// })
+// .catch(error=>{
+//   console.log(error);
   
-}
+// }
 
-)
+// )
 
-  }; 
+//   }; 
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("email", email);
+  formData.append("password", password);
+  formData.append("phone", phone);
+  formData.append("gender", gender);
+  formData.append("profile", profile); // <-- this is the file
+  formData.append("village", village);
+  formData.append("state", state);
+  formData.append("farmerId", farmerId);
+  formData.append("district", district);
+  formData.append("pincode", pincode);
+  formData.append("address", address);
+
+  axios.post("http://192.168.1.4:4000/api/user/register", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  })
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.error("Axios Error:", error);
+    });
+};
 
   return (
     <div className="container-fluid maincontainer">
@@ -237,9 +266,9 @@ const Login = () => {
                           className="form-control shadow-none"
                         >
                           <option value="">Select Gender</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                          <option value="other">Other</option>
+                          <option value="male">MALE</option>
+                          <option value="female">FEMALE</option>
+                          <option value="other">OTHER</option>
                         </select>
                       </div>
 
@@ -248,7 +277,7 @@ const Login = () => {
                         <input
                           type="file"
                           id="profile"
-                         onChange={(e)=>setProfile(e.target.value[0])}
+                         onChange={(e)=>setProfile(e.target.files[0])}
                           className="form-control shadow-none"
                           accept="image/*"
                         />

@@ -4,24 +4,24 @@ import styles from "../assets/css/Navbar.module.css";
 import { CiSearch } from "react-icons/ci";
 import { IoClose } from "react-icons/io5"; // Close icon
 import { Link } from "react-router-dom";
+import '../App.css';
 const Navbar = () => {
   const [openSearch, setOpenSearch] = useState(true);
   return (
     <nav className={`navbar navbar-expand-lg navbar-light ${styles.fixedNavbar}`}>
-      <div className="container-fluid d-flex align-items-center justify-content-between">
-       <div>
+      <div className="container-fluid">
+        <div className="col-3">
           <Link className={`navbar-brand {styles.imgbrand}`} to="/khetilogo">
-            <img src={img} alt="" className={`img-fluid  me-xl-5 ${styles.navimg}`} />
+            <img src={img} alt="" className={`img-fluid ${styles.navimg}`} />
           </Link>
-      </div>
-      <div>
-        <button className="navbar-toggler border-0 shadow-none " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        </div>
+        <button className="navbar-toggler border-0  shadow-none " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
-     
+        <div className="col-9 ">
           <div className="collapse navbar-collapse " id="navbarSupportedContent">
             {openSearch ?
-              <ul className="navbar-nav  ms-xl-5 mb-2 gap-2 mb-lg-0 fw-bold"
+              <ul className="navbar-nav mr-5 mb-2 gap-2 mb-lg-0 fw-bold"
 
               >
                 <li className={`nav-item dropdown ${styles.hoverDropdown} ${styles.liHover}`}>
@@ -119,10 +119,10 @@ const Navbar = () => {
                 </div>
               </form>
             }
- </div>
+
           </div>
         </div>
-        
+      </div>
     </nav>
   )
 }
