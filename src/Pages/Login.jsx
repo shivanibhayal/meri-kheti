@@ -50,10 +50,8 @@ const Login = () => {
   const handleNext = () => {
     if (validateStep()) {
       setFormStep((prev) => prev +1  );
-       
-      alert("Please fill all required fields before continuing." + profile+" " +name);
     } else {
-      alert("Please fill all required fields before continuing.", name,email,password,phone, gender, profile  );
+      alert("Please fill all required fields before continuing.", name,email,password,phone, gender, profile);
     }
   };
 
@@ -65,7 +63,17 @@ const Login = () => {
     e.preventDefault();
     axios.post('http://192.168.1.10:4000/api/user/register',{
       name:name,
-
+      email:email,
+      password:password,
+      phone:phone,
+      gender:gender,
+      profile:profile,
+      village:village,
+      state:state,
+      farmerId:farmerId,
+      district:district,
+      pincode:pincode,
+      address:address
     })
 .then(result=>{
   console.log(result);

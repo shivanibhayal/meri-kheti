@@ -1,5 +1,6 @@
 .navimg{
-    width: 7rem;
+  width: 6rem;
+  
 }
 .input{
     height:45px;
@@ -31,9 +32,8 @@
   top: 0  !important;
   left: 0  !important;
   right: 0  !important;
-  z-index: 5 !important;
+  z-index: 500 !important;
   background-color: white  !important;
-  height: 80px  !important; 
 }
 .navLoginBtn:hover{
 color: white !important;
