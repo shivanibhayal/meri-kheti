@@ -1,24 +1,26 @@
 import React, { useState } from "react";
 import "../assets/css/login.css";
-import axios from 'axios';
+import axios from "axios";
 import Styles from "./Login.module.css";
 
 const Login = () => {
   const [openlogin, setOpenLogin] = useState(false);
   const [formStep, setFormStep] = useState(1);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState(''); 
-     const [password, setPassword] = useState('');
-      const [phone, setPhone] = useState('');
-       const [gender, setGender] = useState('');
-        const [profile, setProfile] = useState('');
-         const [village, setVillage] = useState('');
-          const [state, setState] = useState('');
-           const [farmerId, setFarmerId] = useState('');
-            const [district, setDistrict] = useState('');
-             const [pincode, setPincode] = useState('');
-              const [address, setAddress] = useState('');
- 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("");
+  const [profile, setProfile] = useState("");
+  const [village, setVillage] = useState("");
+  const [state, setState] = useState("");
+  const [farmerId, setFarmerId] = useState("");
+  const [district, setDistrict] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [address, setAddress] = useState("");
+  const [otpSent, setOtpSent] = useState(false); // To show OTP box
+  const [otp, setOtp] = useState(""); // Store OTP from server
+  const [otpInput, setOtpInput] = useState("");
 
   // const handleChange = (e) => {
   //   const { id, value } = e.target;
@@ -31,27 +33,28 @@ const Login = () => {
 
   const validateStep = () => {
     if (formStep === 1) {
-      return name && email && password && phone && gender ;
+      return name && email && password && phone && gender;
     }
-    
+
     if (formStep === 2) {
-      return (
-        village &&
-        state &&
-        farmerId &&
-        district &&
-       pincode &&
-        address
-      );
+      return village && state && farmerId && district && pincode && address;
     }
     return false;
   };
 
   const handleNext = () => {
     if (validateStep()) {
-      setFormStep((prev) => prev +1  );
+      setFormStep((prev) => prev + 1);
     } else {
-      alert("Please fill all required fields before continuing.", name,email,password,phone, gender, profile);
+      alert(
+        "Please fill all required fields before continuing.",
+        name,
+        email,
+        password,
+        phone,
+        gender,
+        profile
+      );
     }
   };
 
@@ -59,69 +62,88 @@ const Login = () => {
     setFormStep((prev) => prev - 1);
   };
 
-//   const handleSubmit =(e) => {
-//     e.preventDefault();
-//     axios.post('http://192.168.1.4:4000/api/user/register',{
-//       name:name,
-//       email:email,
-//       password:password,
-//       phone:phone,
-//       gender:gender,
-//       profile:profile,
-//       village:village,
-//       state:state,
-//       farmerId:farmerId,
-//       district:district,
-//       pincode:pincode,
-//       address:address
-//     })
-// .then(result=>{
-//   console.log(result);
-// })
-// .catch(error=>{
-//   console.log(error);
-  
-// }
+  //   const handleSubmit =(e) => {
+  //     e.preventDefault();
+  //     axios.post('http://192.168.1.4:4000/api/user/register',{
+  //       name:name,
+  //       email:email,
+  //       password:password,
+  //       phone:phone,
+  //       gender:gender,
+  //       profile:profile,
+  //       village:village,
+  //       state:state,
+  //       farmerId:farmerId,
+  //       district:district,
+  //       pincode:pincode,
+  //       address:address
+  //     })
+  // .then(result=>{
+  //   console.log(result);
+  // })
+  // .catch(error=>{
+  //   console.log(error);
 
-// )
+  // }
 
-//   }; 
-const handleSubmit = (e) => {
-  e.preventDefault();
+  // )
 
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("email", email);
-  formData.append("password", password);
-  formData.append("phone", phone);
-  formData.append("gender", gender);
-  formData.append("profile", profile); // <-- this is the file
-  formData.append("village", village);
-  formData.append("state", state);
-  formData.append("farmerId", farmerId);
-  formData.append("district", district);
-  formData.append("pincode", pincode);
-  formData.append("address", address);
+  //   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  axios.post("http://192.168.1.4:4000/api/user/register", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  })
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((error) => {
-      console.error("Axios Error:", error);
-    });
-};
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("phone", phone);
+    formData.append("gender", gender);
+    formData.append("profile", profile); // <-- this is the file
+    formData.append("village", village);
+    formData.append("state", state);
+    formData.append("farmerId", farmerId);
+    formData.append("district", district);
+    formData.append("pincode", pincode);
+    formData.append("address", address);
+
+    try {
+      const response = await axios.post(
+        "http://192.168.1.4:4000/api/user/register",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      // 🧠 Backend sends OTP (for testing, backend returns it in response)
+      setOtp(response.data.otp); // Save OTP in state
+      setOtpSent(true); // Show OTP input box
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        alert("User already registered with this email or phone number.");
+      } else if (error.request) {
+        alert("Network error. Please check your internet connection.");
+      } else {
+        alert("Something went wrong.");
+      }
+    }
+  };
+
+  const handleVerifyOtp = () => {
+    if (otpInput === otp) {
+      alert(" OTP verified successfully!");
+      // Redirect or reset form here
+    } else {
+      alert(" Invalid OTP, please try again.");
+    }
+  };
 
   return (
     <div className="container-fluid maincontainer">
       <div className="text-center mb-3 mr-2">
         <button
           className={`border-0 borderchng px-5 py-3 ${
-            openlogin ? "bg-success text-white":"btn-light"
+            openlogin ? "bg-success text-white" : "btn-light"
           }`}
           onClick={() => setOpenLogin(true)}
         >
@@ -176,7 +198,10 @@ const handleSubmit = (e) => {
                   </span>
                 </div>
                 <div className="mt-2">
-                  <button className="border-0 rounded-4 formbtn w-100 p-2" type="button">
+                  <button
+                    className="border-0 rounded-4 formbtn w-100 p-2"
+                    type="button"
+                  >
                     Login
                   </button>
                 </div>
@@ -216,7 +241,7 @@ const handleSubmit = (e) => {
                           type="text"
                           id="name"
                           value={name}
-                          onChange={(e)=>setName(e.target.value)}
+                          onChange={(e) => setName(e.target.value)}
                           className="form-control shadow-none"
                           placeholder="Enter name"
                         />
@@ -224,11 +249,11 @@ const handleSubmit = (e) => {
                       <div className="mb-3 col-12 col-lg-6 col-md-6 ">
                         <label>Email</label>
                         <input
-                          type="email"  
+                          type="email"
                           name="email"
                           id="email"
                           value={email}
-                            onChange={(e)=>setEmail(e.target.value)}
+                          onChange={(e) => setEmail(e.target.value)}
                           className="form-control shadow-none"
                           placeholder="Enter email"
                         />
@@ -240,7 +265,7 @@ const handleSubmit = (e) => {
                           name="password"
                           id="password"
                           value={password}
-                            onChange={(e)=>setPassword(e.target.value)}
+                          onChange={(e) => setPassword(e.target.value)}
                           className="form-control shadow-none"
                           placeholder="Enter password"
                         />
@@ -252,7 +277,7 @@ const handleSubmit = (e) => {
                           type="tel"
                           id="phone"
                           value={phone}
-                           onChange={(e)=>setPhone(e.target.value)}
+                          onChange={(e) => setPhone(e.target.value)}
                           className="form-control shadow-none"
                           placeholder="Enter phone number"
                         />
@@ -262,7 +287,7 @@ const handleSubmit = (e) => {
                         <select
                           id="gender"
                           value={gender}
-                           onChange={(e)=>setGender(e.target.value)}
+                          onChange={(e) => setGender(e.target.value)}
                           className="form-control shadow-none"
                         >
                           <option value="">Select Gender</option>
@@ -277,7 +302,7 @@ const handleSubmit = (e) => {
                         <input
                           type="file"
                           id="profile"
-                         onChange={(e)=>setProfile(e.target.files[0])}
+                          onChange={(e) => setProfile(e.target.files[0])}
                           className="form-control shadow-none"
                           accept="image/*"
                         />
@@ -301,7 +326,7 @@ const handleSubmit = (e) => {
                           type="text"
                           id="village"
                           value={village}
-                        onChange={(e)=>setVillage(e.target.value)}
+                          onChange={(e) => setVillage(e.target.value)}
                           className="form-control shadow-none"
                           placeholder="Enter village"
                         />
@@ -312,7 +337,7 @@ const handleSubmit = (e) => {
                           type="text"
                           id="state"
                           value={state}
-                            onChange={(e)=>setState(e.target.value)}
+                          onChange={(e) => setState(e.target.value)}
                           className="form-control shadow-none"
                           placeholder="Enter state"
                         />
@@ -323,7 +348,7 @@ const handleSubmit = (e) => {
                           type="text"
                           id="farmerId"
                           value={farmerId}
-                           onChange={(e)=>setFarmerId(e.target.value)}
+                          onChange={(e) => setFarmerId(e.target.value)}
                           className="form-control shadow-none"
                           placeholder="Enter farmer ID"
                         />
@@ -334,7 +359,7 @@ const handleSubmit = (e) => {
                           type="text"
                           id="district"
                           value={district}
-                         onChange={(e)=>setDistrict(e.target.value)}
+                          onChange={(e) => setDistrict(e.target.value)}
                           className="form-control shadow-none"
                           placeholder="Enter district"
                         />
@@ -345,7 +370,7 @@ const handleSubmit = (e) => {
                           type="text"
                           id="pincode"
                           value={pincode}
-                          onChange={(e)=>setPincode(e.target.value)}
+                          onChange={(e) => setPincode(e.target.value)}
                           className="form-control shadow-none"
                           placeholder="Enter pincode"
                         />
@@ -356,7 +381,7 @@ const handleSubmit = (e) => {
                           type="text"
                           id="address"
                           value={address}
-                          onChange={(e)=>setAddress(e.target.value)}
+                          onChange={(e) => setAddress(e.target.value)}
                           className="form-control shadow-none"
                           placeholder="Enter address"
                         />
@@ -396,6 +421,27 @@ const handleSubmit = (e) => {
                       <br />
                       <br />
                     </>
+                  )}
+                  {otpSent && (
+                    <div className="text-center mt-3">
+                      <h5 className="text-success">
+                        Enter OTP sent to your email/phone
+                      </h5>
+                      <input
+                        type="text"
+                        value={otpInput}
+                        onChange={(e) => setOtpInput(e.target.value)}
+                        className="form-control w-50 m-auto my-3"
+                        placeholder="Enter OTP"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleVerifyOtp}
+                        className="formbtn border-0 px-4 py-2 rounded-4"
+                      >
+                        Verify OTP
+                      </button>
+                    </div>
                   )}
                 </div>
                 <p className="text-success float-end">
