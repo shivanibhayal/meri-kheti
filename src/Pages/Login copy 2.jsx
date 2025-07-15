@@ -16,16 +16,9 @@ const Login = () => {
   const [district, setDistrict] = useState("");
   const [pincode, setPincode] = useState("");
   const [address, setAddress] = useState("");
-  // const [otpSent, setOtpSent] = useState(false); // To show OTP box
-  // const [otp, setOtp] = useState(""); // Store OTP from server
-  // const [otpInput, setOtpInput] = useState("");
-
-
-
-
-
-
-
+  const [otpSent, setOtpSent] = useState(false); // To show OTP box
+  const [otp, setOtp] = useState(""); // Store OTP from server
+  const [otpInput, setOtpInput] = useState("");
 
   // const handleChange = (e) => {
   //   const { id, value } = e.target;
@@ -47,8 +40,6 @@ const Login = () => {
     return false;
   };
 
-
-
   const handleNext = () => {
     if (validateStep()) {
       setFormStep((prev) => prev + 1);
@@ -66,50 +57,61 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("phone", phone);
-    formData.append("gender", gender);
-    formData.append("profile", profile);
-    formData.append("village", village);
-    formData.append("state", state);
-    formData.append("farmerId", farmerId);
-    formData.append("district", district);
-    formData.append("pincode", pincode);
-    formData.append("address", address);
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("email", email);
+  formData.append("password", password);
+  formData.append("phone", phone);
+  formData.append("gender", gender);
+  formData.append("profile", profile);
+  formData.append("village", village);
+  formData.append("state", state);
+  formData.append("farmerId", farmerId);
+  formData.append("district", district);
+  formData.append("pincode", pincode);
+  formData.append("address", address);
 
-    try {
-      const response = await axios.post(
-        "https://609f2fdb6c68.ngrok-free.app/api/user/register",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log(" Registration successful:", response.data);
-      alert("Registered successfully!");
-
-    } catch (error) {
-      console.error(" API Error:", error.response || error.message);
-      alert("Something went wrong. Please check your input.");
-
+try {
+  const response = await axios.post(
+    "https://609f2fdb6c68.ngrok-free.app/api/user/register",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     }
+  );
+
+  console.log("✔️ Registration successful:", response.data);
+  alert("Registered successfully!");
+} catch (error) {
+  if (error.response) {
+    const errMsg = error.response.data?.message || "";
+ 
+    if (
+      errMsg.toLowerCase().includes("email already exists") || // adjust according to your backend message
+      errMsg.toLowerCase().includes("email already registered")
+    ) {
+      alert("Email is already registered.");
+    }
+     else {
+      console.error("❌ API Error:", error.response.data);
+      alert(errMsg || "Something went wrong. Please check your input.");
+    }
+  } else {
+    console.error("❌ Network Error:", error);
+    alert("Network error. Please try again later.");
+  }
+}
+
+};
+
+
+  const handlePrevious = () => {
+    setFormStep((prev) => prev - 1);
   };
-
-
-
-
-
-
-
-
 
   //   const handleSubmit =(e) => {
   //     e.preventDefault();
@@ -139,20 +141,70 @@ const Login = () => {
   //   };
 
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const formData = new FormData();
+  //   formData.append("name", name);
+  //   formData.append("email", email);
+  //   formData.append("password", password);
+  //   formData.append("phone", phone);
+  //   formData.append("gender", gender);
+  //   formData.append("profile", profile); // <-- this is the file
+  //   formData.append("village", village);
+  //   formData.append("state", state);
+  //   formData.append("farmerId", farmerId);
+  //   formData.append("district", district);
+  //   formData.append("pincode", pincode);
+  //   formData.append("address", address);
+
+  //   try {
+  //     const response = await axios.post(
+  //       "https://609f2fdb6c68.ngrok-free.app/api/user/register",
+  //       formData,
+  //       {
+  //         headers: { "Content-Type": "multipart/form-data" },
+  //       }
+  //     );
+
+  //     // 🧠 Backend sends OTP (for testing, backend returns it in response)
+  //     setOtp(response.data.otp); // Save OTP in state
+  //     setOtpSent(true); // Show OTP input box
+  //   } catch (error) {
+  //     if (error.response && error.response.status === 400) {
+  //       alert("User already registered with this email or phone number.");}
+  //     // } else if (error.request) {
+  //     //   alert("Network error. Please check your internet connection.");
+  //     // } else {
+  //     //   alert("Something went wrong.");
+  //     // }
+  //   }
+  // };
+
+  // const handleVerifyOtp = () => {
+  //   if (otpInput === otp) {
+  //     alert(" OTP verified successfully!");
+  //     // Redirect or reset form here
+  //   } else {
+  //     alert(" Invalid OTP, please try again.");
+  //   }
+  // };
 
   return (
     <div className="container-fluid maincontainer">
       <div className="text-center mb-3 mr-2">
         <button
-          className={`border-0 borderchng px-5 py-3 ${openlogin ? "bg-success text-white" : "btn-light"
-            }`}
+          className={`border-0 borderchng px-5 py-3 ${
+            openlogin ? "bg-success text-white" : "btn-light"
+          }`}
           onClick={() => setOpenLogin(true)}
         >
           Login
         </button>
         <button
-          className={` px-5 border-0 borderchng2 py-3 ${!openlogin ? "bg-success text-white" : "btn-light"
-            }`}
+          className={` px-5 border-0 borderchng2 py-3 ${
+            !openlogin ? "bg-success text-white" : "btn-light"
+          }`}
           onClick={() => {
             setOpenLogin(false);
             setFormStep(1);
@@ -164,8 +216,9 @@ const Login = () => {
 
       <div className="row w-100 justify-content-center ">
         <div
-          className={` mt-1 ${!openlogin ? "col-md-8 col-lg-8" : "col-md-6 col-lg-5"
-            }`}
+          className={` mt-1 ${
+            !openlogin ? "col-md-8 col-lg-8" : "col-md-6 col-lg-5"
+          }`}
         >
           {openlogin ? (
             <form action=" " className="">
@@ -208,8 +261,9 @@ const Login = () => {
                   <span className="text-success">
                     Dont have an account?{" "}
                     <span
-                      className={`border-0 py-2 ${!openlogin ? "bg-success text-white" : "btn-light"
-                        }`}
+                      className={`border-0 py-2 ${
+                        !openlogin ? "bg-success text-white" : "btn-light"
+                      }`}
                       onClick={() => setOpenLogin(false)}
                       type="button"
                     >
@@ -252,7 +306,6 @@ const Login = () => {
                           id="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-
                           className="form-control shadow-none"
                           placeholder="Enter email"
                         />

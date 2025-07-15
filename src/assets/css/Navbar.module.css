@@ -27,14 +27,25 @@
     background-color: #82cea6;
   border-radius: 2rem;
 }
-.fixedNavbar {
+/* .fixedNavbar {
   position: fixed !important;
   top: 0  !important;
   left: 0  !important;
   right: 0  !important;
   z-index: 500 !important;
   background-color: white  !important;
-}
+} */
 .navLoginBtn:hover{
 color: white !important;
+}
+
+.changeBg{
+    color: black !important;
+    background-color: transparent !important;
+}
+.changeBg:hover{
+    color: black !important;
+    font-weight: bold;
+    background-color:gray !important;
+    border-radius: 10px;
 }

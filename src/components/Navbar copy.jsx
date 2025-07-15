@@ -16,11 +16,10 @@ const Navbar = () => {
             <img src={img} alt="" className={`img-fluid ${styles.navimg}`} />
           </Link>
         </div>
-        
-        <div className="col-9 ">
-           <button className="navbar-toggler border-0  shadow-none " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button className="navbar-toggler border-0  shadow-none " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
+        <div className="col-9 ">
           <div className="collapse navbar-collapse " id="navbarSupportedContent">
             {openSearch ?
               <ul className="navbar-nav mr-5 mb-2 gap-2 mb-lg-0 fw-bold"

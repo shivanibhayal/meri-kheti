@@ -16,17 +16,7 @@ const Login = () => {
   const [district, setDistrict] = useState("");
   const [pincode, setPincode] = useState("");
   const [address, setAddress] = useState("");
-  // const [otpSent, setOtpSent] = useState(false); // To show OTP box
-  // const [otp, setOtp] = useState(""); // Store OTP from server
-  // const [otpInput, setOtpInput] = useState("");
-
-
-
-
-
-
-
-
+  
   // const handleChange = (e) => {
   //   const { id, value } = e.target;
   //   setFormData((prev) => ({ ...prev, [id]: value }));
