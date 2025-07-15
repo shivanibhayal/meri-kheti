@@ -5,7 +5,7 @@ import slide3 from "../assets/images/slider3.jpeg";
 import slide4 from "../assets/images/slider4.jpeg";
 const Slider = () => {
   return (
-    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+    <div id="carouselExampleInterval" class="carousel slide mt-5" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active" data-bs-interval="1000">
       
