@@ -131,33 +131,7 @@ const [passwordError, setPasswordError] = useState(false);
 
     };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
 
-  //   const formData = new FormData();
-  //   formData.append("name", name);
-  //   formData.append("email", email);
-  //   formData.append("password", password);
-  //   formData.append("phone", phone);
-  //   formData.append("gender", gender);
-  //   formData.append("profile", profile); // <-- this is the file
-  //   formData.append("village", village);
-  //   formData.append("state", state);
-  //   formData.append("farmerId", farmerId);
-  //   formData.append("district", district);
-  //   formData.append("pincode", pincode);
-  //   formData.append("address", address);
-
-  //   try {
-  //     const response = await axios.post(
-  //       "http://192.168.1.4:4000/api/user/register",
-  //       formData,
-  //       {
-  //         headers: { "Content-Type": "multipart/form-data" },
-  //       }
-  //     );
-
-  //   }
    
 
   return (
