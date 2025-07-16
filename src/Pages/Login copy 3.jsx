@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../assets/css/login.css";
 import axios from "axios";
+import Styles from "./Login.module.css";
+
 const Login = () => {
   const [openlogin, setOpenLogin] = useState(false);
   const [formStep, setFormStep] = useState(1);
@@ -16,133 +18,137 @@ const Login = () => {
   const [district, setDistrict] = useState("");
   const [pincode, setPincode] = useState("");
   const [address, setAddress] = useState("");
-  
-  // const handleChange = (e) => {
-  //   const { id, value } = e.target;
-  //   setFormData((prev) => ({ ...prev, [id]: value }));
-  // };
 
-  // const handleFileChange = (e) => {
-  //   setFormData((prev) => ({ ...prev, profile: e.target.files[0] }));
+  const [phoneError, setPhoneError] = useState(false);
+const [passwordError, setPasswordError] = useState(false);
+
+
+  // const validateStep = () => {
+  //   if (formStep === 1) {
+  //     return name && email && password && phone && gender;
+  //   }
+
+  //   if (formStep === 2) {
+  //     return village && state && farmerId && district && pincode && address;
+  //   }
+  //   return false;
   // };
 
   const validateStep = () => {
-    if (formStep === 1) {
-      return name && email && password && phone && gender;
+  let isValid = true;
+
+  setPhoneError(false);
+  setPasswordError(false);
+
+  if (formStep === 1) {
+    if (!name || !email || !password || !phone || !gender) {
+      alert("Please fill in all fields");
+      return false;
     }
 
-    if (formStep === 2) {
-      return village && state && farmerId && district && pincode && address;
+    // Validate phone
+    if (phone.length !== 10 || isNaN(phone)) {
+      setPhoneError(true);
+      isValid = false;
     }
-    return false;
-  };
 
+    // Validate password
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < 8 || !hasLetter || !hasNumber || !hasSpecial) {
+      setPasswordError(true);
+      isValid = false;
+    }
+
+    // if (!isValid) {
+    //   // alert("Please correct the highlighted fields.");
+    //   return false;
+    // }
+
+    return isValid;
+  }
+
+  if (formStep === 2) {
+    if (!village || !state || !farmerId || !district || !pincode || !address) {
+      alert("Please fill in all address fields.");
+      return false;
+    }
+    return true;
+  }
+
+  return false;
+};
 
 
   const handleNext = () => {
     if (validateStep()) {
       setFormStep((prev) => prev + 1);
-    } else {
-      alert(
-        "Please fill all required fields before continuing.",
-        name,
-        email,
-        password,
-        phone,
-        gender,
-        profile
-      );
     }
+    // } else {
+    //   alert(
+    //     // "Please fill all required fields before continuing.",
+    //     // name,
+    //     // email,
+    //     // password,
+    //     // phone,
+    //     // gender,
+    //     // profile
+    //   );
+    // }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("phone", phone);
-    formData.append("gender", gender);
-    formData.append("profile", profile);
-    formData.append("village", village);
-    formData.append("state", state);
-    formData.append("farmerId", farmerId);
-    formData.append("district", district);
-    formData.append("pincode", pincode);
-    formData.append("address", address);
-
-    try {
-      const response = await axios.post(
-        "https://609f2fdb6c68.ngrok-free.app/api/user/register",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log(" Registration successful:", response.data);
-      alert("Registered successfully!");
-
-    } catch (error) {
-      console.error(" API Error:", error.response || error.message);
-      alert("Something went wrong. Please check your input.");
-
-    }
+  const handlePrevious = () => {
+    setFormStep((prev) => prev - 1);
   };
 
+    const handleSubmit =(e) => {
+      e.preventDefault();
+      axios.post('http://192.168.1.4:4000/api/user/register',{
+        name:name,
+        email:email,
+        password:password,
+        phone:phone,
+        gender:gender,
+        profile:profile,
+        village:village,
+        state:state,
+        farmerId:farmerId,
+        district:district,
+        pincode:pincode,
+        address:address
+      })
+  .then(result=>{
+    console.log(result);
+  })
+  .catch(error=>{
+    console.log(error);
+
+  }
+
+  )
+
+    };
 
 
-
-
-
-
-
-
-  //   const handleSubmit =(e) => {
-  //     e.preventDefault();
-  //     axios.post('https://609f2fdb6c68.ngrok-free.app/api/user/register',{
-  //       name:name,
-  //       email:email,
-  //       password:password,
-  //       phone:phone,
-  //       gender:gender,
-  //       village:village,
-  //       state:state,
-  //       farmerId:farmerId,
-  //       district:district,
-  //       pincode:pincode,
-  //       address:address
-  //     })
-  // .then(result=>{
-  //   console.log(result);
-  // })
-  // .catch(error=>{
-  //   console.log(error);
-
-  // }
-
-  // )
-
-  //   };
-
-
+   
 
   return (
     <div className="container-fluid maincontainer">
       <div className="text-center mb-3 mr-2">
         <button
-          className={`border-0 borderchng px-5 py-3 ${openlogin ? "bg-success text-white" : "btn-light"
-            }`}
+          className={`border-0 borderchng px-5 py-3 ${
+            openlogin ? "bg-success text-white" : "btn-light"
+          }`}
           onClick={() => setOpenLogin(true)}
         >
           Login
         </button>
         <button
-          className={` px-5 border-0 borderchng2 py-3 ${!openlogin ? "bg-success text-white" : "btn-light"
-            }`}
+          className={` px-5 border-0 borderchng2 py-3 ${
+            !openlogin ? "bg-success text-white" : "btn-light"
+          }`}
           onClick={() => {
             setOpenLogin(false);
             setFormStep(1);
@@ -154,8 +160,9 @@ const Login = () => {
 
       <div className="row w-100 justify-content-center ">
         <div
-          className={` mt-1 ${!openlogin ? "col-md-8 col-lg-8" : "col-md-6 col-lg-5"
-            }`}
+          className={` mt-1 ${
+            !openlogin ? "col-md-8 col-lg-8" : "col-md-6 col-lg-5"
+          }`}
         >
           {openlogin ? (
             <form action=" " className="">
@@ -198,8 +205,9 @@ const Login = () => {
                   <span className="text-success">
                     Dont have an account?{" "}
                     <span
-                      className={`border-0 py-2 ${!openlogin ? "bg-success text-white" : "btn-light"
-                        }`}
+                      className={`border-0 py-2 ${
+                        !openlogin ? "bg-success text-white" : "btn-light"
+                      }`}
                       onClick={() => setOpenLogin(false)}
                       type="button"
                     >
@@ -213,7 +221,7 @@ const Login = () => {
             </form>
           ) : (
             <div className="row changeBg">
-              <form onSubmit={handleSubmit} className="">
+              <form onSubmit={handleSubmit} >
                 {/* STEP 1 */}
                 {formStep === 1 && (
                   <>
@@ -242,7 +250,6 @@ const Login = () => {
                           id="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-
                           className="form-control shadow-none"
                           placeholder="Enter email"
                         />
@@ -254,10 +261,15 @@ const Login = () => {
                           name="password"
                           id="password"
                           value={password}
-                          onChange={(e) => setPassword(e.target.value)}
+                          onChange={(e) =>{setPassword(e.target.value);setPasswordError(false);}}
                           className="form-control shadow-none"
                           placeholder="Enter password"
                         />
+                        {passwordError && (
+    <small className="text-danger">
+      Must be 8+ characters with letter, number & special char
+    </small>
+  )}
                       </div>
 
                       <div className="mb-3 col-12 col-lg-6 col-md-6">
@@ -266,10 +278,16 @@ const Login = () => {
                           type="tel"
                           id="phone"
                           value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onChange={(e) => {
+      setPhone(e.target.value);
+      setPhoneError(false);
+    }}
                           className="form-control shadow-none"
                           placeholder="Enter phone number"
                         />
+                        {phoneError && (
+    <small className="text-danger">Phone must be exactly 10 digits</small>
+  )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6 col-md-6">
                         <label>Gender</label>
@@ -378,9 +396,18 @@ const Login = () => {
                     </div>
                   </>
                 )}
+                {formStep===3 &&(
+                  <div className="text-center">  
+                 <h5 className="bg-success  text-white rounded-4 m-auto mb-3 p-3 w-25 text-center ">
+                      OTP Verification
+                      </h5>
+                  <input type="text" className="p-2 mb-3 rounded" placeholder="enter 6 digit otp" /><br/>
+                  <button className="btn bg-success ms-2 text-white">Verify otp</button>
+                  </div>
+                )}
 
                 {/* Buttons */}
-                <div className="mt-2 d-flex flex-row align-items-center justify-content-end gap-2 w-100">
+                <div className="mt-2 d-flex flex-row align-items-center justify-content-end gap-2  w-100">
                   {formStep > 1 && (
                     <button
                       type="button"
@@ -404,6 +431,7 @@ const Login = () => {
                       <button
                         type="submit"
                         className="border-0 p-2 formbtn rounded-4"
+                        onClick={handleNext}
                       >
                         Submit
                       </button>
@@ -411,34 +439,13 @@ const Login = () => {
                       <br />
                     </>
                   )}
-                  {/* {otpSent && (
-                    <div className="text-center mt-3">
-                      <h5 className="text-success">
-                        Enter OTP sent to your email/phone
-                      </h5>
-                      <input
-                        type="text"
-                        value={otpInput}
-                        onChange={(e) => setOtpInput(e.target.value)}
-                        className="form-control w-50 m-auto my-3"
-                        placeholder="Enter OTP"
-                      />
-                      <button
-                        type="button"
-                        onClick={handleVerifyOtp}
-                        className="formbtn border-0 px-4 py-2 rounded-4"
-                      >
-                        Verify OTP
-                      </button>
-                    </div>
-                  )} */}
                 </div>
                 <p className="text-success float-end">
-                  Already have an account?{" "}
+                  Already have an account? 
                   <button
                     type="button"
                     onClick={() => setOpenLogin(true)}
-                    className={`border-0 bg-transparent text-success text-decoration-underline`}
+                    className="border-0 bg-transparent text-success text-decoration-underline"
                     style={{ cursor: "pointer" }}
                   >
                     Login
@@ -451,6 +458,8 @@ const Login = () => {
       </div>
     </div>
   );
+  
 };
+
 
 export default Login;
