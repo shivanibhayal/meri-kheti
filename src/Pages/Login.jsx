@@ -14,13 +14,23 @@ const Login = () => {
   const [gender, setGender] = useState("");
   const [profile, setProfile] = useState("");
   const [village, setVillage] = useState("");
+   const [villageError, setVillageError] = useState("");
+  const[country,setCountry]=useState("");
+  const[countryError,setCountryError]=useState("");
+  const[city,setCity]=useState("");
+  const[cityError,setCityError]=useState("");
   const [state, setState] = useState("");
-  const [farmerId, setFarmerId] = useState("");
+   const [stateError, setStateError] = useState("");
   const [district, setDistrict] = useState("");
+  const [districtError, setDistrictError] = useState("");
   const [pincode, setPincode] = useState("");
+  const [pincodeError, setPincodeError] = useState("");
   const [address, setAddress] = useState("");
+   const [addressError, setAddressError] = useState("");
+  const[farmerId,setFarmerId]=useState('');
+  const[farmerIdError,setFarmerIdError]=useState('');
   const [isExistingUser, setIsExistingUser] = useState(false);
-  const [checkMessage, setCheckMessage] = useState("");
+  // const [checkMessage, setCheckMessage] = useState("");
   const [nameError, setNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -96,52 +106,113 @@ const Login = () => {
     }
   };
 
-  const validateStep = () => {
+
+  const validateStep2=()=>{
     let isValid = true;
+    setCountryError("");
+    setStateError("");
+    setDistrictError("");
+    setCityError("");
+    setVillageError("");
+    setPincodeError("");
+    setAddressError("");
+    setFarmerIdError("");
+     if (!country.trim()) {
+    setNameError("country is required");
+    isValid = false;
+  }
+   if (!state.trim()) {
+    setNameError("state is required");
+    isValid = false;
+  }
+   if (!district.trim()) {
+    setNameError("district is required");
+    isValid = false;
+  }
+   if (!city.trim()) {
+    setNameError("city is required");
+    isValid = false;
+  }
 
-    // Reset all errors
-    setNameError(false);
-    setEmailError(false);
-    setPasswordError(false);
-    setPhoneError(false);
-    setGenderError(false);
+   if (!village.trim()) {
+    setNameError("village is required");
+    isValid = false;
+  }
 
-    // Name check
-    if (!name.trim()) {
-      setNameError(true);
-      isValid = false;
-    }else if(!name.trim().length<3){
-setNameError(true);
-isValid=false;
-    }
+   if (!pincode.trim()) {
+    setNameError("pincode is required");
+    isValid = false;
+  }
 
-    // Email check (basic)
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailError(true);
-      isValid = false;
-    }
+   if (!address.trim()) {
+    setNameError("address is required");
+    isValid = false;
+  }
 
-    // Phone number check
-    if (!phone || phone.length !== 10 || isNaN(phone)) {
-      setPhoneError(true);
-      isValid = false;
-    }
+   if (!id.trim()) {
+    setNameError("Id is required");
+    isValid = false;
+  }
+  }
 
-    // Gender check
-    if (!gender) {
-      setGenderError(true);
-      isValid = false;
-    }
+  const validateStep = () => {
+  let isValid = true;
 
-    // Password checks
-    const hasLetter = /[a-zA-Z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  // Reset all errors
+  setNameError("");
+  setEmailError("");
+  setPasswordError("");
+  setPhoneError("");
+  setGenderError("");
 
-    if (password.length < 8 || !hasLetter || !hasNumber || !hasSpecial) {
-      setPasswordError(true);
-      isValid = false;
-    }
+  // Name validation
+  if (!name.trim()) {
+    setNameError("Name is required");
+    isValid = false;
+  } else if (name.trim().length < 3) {
+    setNameError("Name must be at least 3 characters");
+    isValid = false;
+  }
+
+  // Email validation
+  if (!email.trim()) {
+    setEmailError("Email is required");
+    isValid = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setEmailError("Invalid email format");
+    isValid = false;
+  }
+
+  // Phone validation
+  if (!phone.trim()) {
+    setPhoneError("Phone number is required");
+    isValid = false;
+  } else if (!/^\d{10}$/.test(phone)) {
+    setPhoneError("Phone must be exactly 10 digits");
+    isValid = false;
+  }else if(!phone.length>10){
+     setPhoneError("more than 10 digit not allowed");
+     isValid = false;
+  }
+
+  // Gender validation
+  if (!gender) {
+    setGenderError("Please select a gender");
+    isValid = false;
+  }
+
+  // Password validation
+  const hasLetter = /[a-zA-Z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+  if (!password.trim()) {
+    setPasswordError("Password is required");
+    isValid = false;
+  } else if (password.length < 8 || !hasLetter || !hasNumber || !hasSpecial) {
+    setPasswordError("Must be 8+ characters with letter, number & special char");
+    isValid = false;
+  }
 
     if (formStep === 1) {
       if (isExistingUser) {
@@ -180,6 +251,16 @@ isValid=false;
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+  //   if (!validateStep2()) {
+  //   return;
+  // }
+
+  
+  // if (formStep === 2) {
+  //   const valid = validateStep2();
+  //   if (!valid) return;
+  // }
+
     if (isExistingUser) {
       alert("User already registered with this email or phone.");
       return;
@@ -201,7 +282,7 @@ isValid=false;
 
     try {
       const response = await axios.post(
-        "https://cb4149ac5283.ngrok-free.app/api/user/register",
+        "https://c24a05a1f47e.ngrok-free.app/api/user/register",
         formData,
         {
           headers: {
@@ -294,12 +375,12 @@ isValid=false;
                 {formStep === 1 && (
                   <>
                     <div className="d-flex align-items-center justify-content-center">
-                      <h5 className="bg-success text-white rounded-4 p-2 w-25 text-center">
+                      <h5 className="bg-success text-white rounded-4 p-3 w-25 fs-4 text-center">
                         Personal details
                       </h5>
                     </div>
                     <div className="row">
-                      <div className="text-center my-2">
+                      <div className="text-center">
                         <label htmlFor="profileInput">
                           <div
                             style={{
@@ -313,7 +394,7 @@ isValid=false;
                             }}
                           >
                             {profilePreview ? (
-                              <imggit 
+                              <img
                                 src={profilePreview}
                                 alt="Profile Preview"
                                 style={{
@@ -324,7 +405,7 @@ isValid=false;
                               />
                             ) : (
                               <div className="d-flex justify-content-center align-items-center h-100 text-muted">
-                                <i className="bi bi-person-circle fs-1"></i>
+                                <i className="bi bi-person-circle"></i>
                               </div>
                             )}
                           </div>
@@ -340,16 +421,16 @@ isValid=false;
                       </div>
 
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>Name</label>
+                        <label>Name <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={name}
-                          onChange={(e) => setName(e.target.value)}
+                          onChange={(e) =>{setName(e.target.value);setNameError(false)}}
                           className="form-control shadow-none"
                           placeholder="Enter name"
                         />
                         {nameError && (
-                          <small className="text-danger">name is reuired</small>
+                          <small className="text-danger">{nameError}</small>
                         )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
@@ -358,16 +439,15 @@ isValid=false;
                         </label>
                         <input
                           type="email"
-                          required
                           value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={(e) => {setEmail(e.target.value);setEmailError(false)}}
                           className="form-control shadow-none"
                           name="email"
                           id="email"
                           placeholder="Enter email"
                         />
                         {emailError && (
-                          <small className="text-danger">invalid email</small>
+                          <small className="text-danger">{emailError}</small>
                         )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
@@ -377,7 +457,6 @@ isValid=false;
                         <input
                           type="password"
                           value={password}
-                          required
                           onChange={(e) => {
                             setPassword(e.target.value);
                             setPasswordError(false);
@@ -387,15 +466,14 @@ isValid=false;
                         />
                         {passwordError && (
                           <small className="text-danger">
-                            Must be 8+ characters with letter, number & special
-                            char
+                           {passwordError}
                           </small>
                         )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>Phone</label>
+                        <label>Phone <span className="text-danger">*</span></label>
                         <input
-                          type="tel"
+                          type="number"
                           value={phone}
                           onChange={(e) => {
                             setPhone(e.target.value);
@@ -407,15 +485,15 @@ isValid=false;
                         />
                         {phoneError && (
                           <small className="text-danger">
-                            Phone must be exactly 10 digits
+                          {phoneError}
                           </small>
                         )}
                       </div>
-                      <div className="mb-3 col-12 col-lg-12">
-                        <label>Gender</label>
+                      <div className="mb-3 col-12 col-lg-5 m-auto">
+                        <label>Gender <span className="text-danger">*</span></label>
                         <select
                           value={gender}
-                          onChange={(e) => setGender(e.target.value)}
+                          onChange={(e) => {setGender(e.target.value);setGenderError(false)}}
                           className="form-control shadow-none"
                         >
                           <option value="">Select Gender</option>
@@ -424,7 +502,7 @@ isValid=false;
                           <option value="other">OTHER</option>
                         </select>
                         {genderError && (
-                          <small className="text-danger">select gender</small>
+                          <small className="text-danger">{setGenderError}</small>
                         )}
                       </div>
                     </div>
@@ -434,70 +512,114 @@ isValid=false;
                 {formStep === 2 && (
                   <>
                     <div className="d-flex align-items-center justify-content-center">
-                      <h5 className="bg-success text-white rounded-4 p-2 w-25 text-center">
+                      <h5 className="bg-success text-white rounded-4 p-3 fs-5 w-25 text-center">
                         Other details
                       </h5>
                     </div>
                     <div className="row">
-                      <div className="mb-3 col-12 col-lg-6">
-                        <label>Village</label>
+                       <div className="mb-3 col-12 col-lg-6">
+                        <label>Country <span className="text-danger">*</span></label>
                         <input
                           type="text"
-                          value={village}
-                          onChange={(e) => setVillage(e.target.value)}
+                          value={country}
+                          onChange={(e) => {setCountry(e.target.value);setCountryError(false)}}
                           className="form-control shadow-none"
-                          placeholder="Enter village"
+                          placeholder="Enter country"
                         />
+                         {countryError && (
+                          <small className="text-danger">{countryError}</small>
+                        )}
                       </div>
-                      <div className="mb-3 col-12 col-lg-6">
-                        <label>State</label>
+                        <div className="mb-3 col-12 col-lg-6">
+                        <label>State <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={state}
-                          onChange={(e) => setState(e.target.value)}
+                          onChange={(e) =>{setState(e.target.value);setStateError(false)}}
                           className="form-control shadow-none"
                           placeholder="Enter state"
                         />
+                         {stateError && (
+                          <small className="text-danger">{stateError}</small>
+                        )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>Farmer ID</label>
-                        <input
-                          type="text"
-                          value={farmerId}
-                          onChange={(e) => setFarmerId(e.target.value)}
-                          className="form-control shadow-none"
-                          placeholder="Enter farmer ID"
-                        />
-                      </div>
-                      <div className="mb-3 col-12 col-lg-6">
-                        <label>District</label>
+                        <label>District <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={district}
-                          onChange={(e) => setDistrict(e.target.value)}
+                          onChange={(e) => {setDistrict(e.target.value);setDistrictError(false)}}
                           className="form-control shadow-none"
                           placeholder="Enter district"
                         />
+                         {districtError && (
+                          <small className="text-danger">{districtError}</small>
+                        )}
+                      </div> 
+                          <div className="mb-3 col-12 col-lg-6">
+                        <label>City <span className="text-danger">*</span></label>
+                        <input
+                          type="text"
+                          value={city}
+                          onChange={(e) => {setCity(e.target.value);setCityError(false)}}
+                          className="form-control shadow-none"
+                          placeholder="Enter city"
+                        />
+                         {cityError && (
+                          <small className="text-danger">{cityError}</small>
+                        )}
+                      </div>                
+                       <div className="mb-3 col-12 col-lg-6">
+                        <label>Village <span className="text-danger">*</span></label>
+                        <input
+                          type="text"
+                          value={village}
+                          onChange={(e) => {setVillage(e.target.value);setVillageError(false)}}
+                          className="form-control shadow-none"
+                          placeholder="Enter village"
+                        />
+                         {villageError && (
+                          <small className="text-danger">{villageError}</small>
+                        )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>Pincode</label>
+                        <label>Pincode <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={pincode}
-                          onChange={(e) => setPincode(e.target.value)}
+                          onChange={(e) => {setPincode(e.target.value);setPincodeError(false)}}
                           className="form-control shadow-none"
                           placeholder="Enter pincode"
                         />
+                         {pincodeError && (
+                          <small className="text-danger">{pincodeError}</small>
+                        )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>Address</label>
+                        <label>Address <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={address}
-                          onChange={(e) => setAddress(e.target.value)}
+                          onChange={(e) => {setAddress(e.target.value);setAddressError(false)}}
                           className="form-control shadow-none"
                           placeholder="Enter address"
                         />
+                         {addressError && (
+                          <small className="text-danger">{addressError}</small>
+                        )}
+                      </div>
+                       <div className="mb-3 col-12 col-lg-6">
+                        <label>Farmer ID <span className="text-danger">*</span></label>
+                        <input
+                          type="text"
+                          value={farmerId}
+                          onChange={(e) => {setFarmerId(e.target.value);setFarmerIdError(false)}}
+                          className="form-control shadow-none"
+                          placeholder="Enter farmer ID"
+                        />
+                         {farmerIdError && (
+                          <small className="text-danger">{farmerIdError}</small>
+                        )}
                       </div>
                     </div>
                   </>
