@@ -473,12 +473,13 @@ const Login = () => {
                       <div className="mb-3 col-12 col-lg-6">
                         <label>Phone <span className="text-danger">*</span></label>
                         <input
-                          type="number"
+                          type="tel"
                           value={phone}
                           onChange={(e) => {
                             setPhone(e.target.value);
                             setPhoneError(false);
                           }}
+                          maxLength={10}
                           className="form-control shadow-none"
                           placeholder="Enter phone number"
                           required
