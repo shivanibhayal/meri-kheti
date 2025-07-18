@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../assets/css/login.css";
 import axios from "axios";
 import Styles from "./Login.module.css";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
   const [openlogin, setOpenLogin] = useState(false);
@@ -38,6 +40,20 @@ const Login = () => {
   const [genderError, setGenderError] = useState(false);
   const [profilePreview, setProfilePreview] = useState(false);
 
+  const [countryCode, setCountryCode] = useState("+91");
+
+  const navigate = useNavigate();
+
+
+  const phoneLengthByCountry = {
+  "+91": 10,   // India
+  "+1": 10,    // USA
+  "+44": 10,   // UK
+  "+971": 9,   // UAE
+  "+61": 9,    // Australia
+  "+81": 10    // Japan
+};
+
   useEffect(() => {
     if (email || phone) {
       checkIfUserExists();
@@ -64,39 +80,43 @@ const Login = () => {
   };
 
   const handleOTPVerify = async () => {
-    const userPhone = localStorage.getItem("userPhone");
-    const enteredOTP = document.getElementById("otp")?.value;
+  const userPhone = localStorage.getItem("userPhone");
+  const enteredOTP = document.getElementById("otp")?.value;
 
-    if (!userPhone) {
-      alert("Phone number not found. Please try registering again.");
-      return;
-    }
+  if (!userPhone) {
+    alert("Phone number not found. Please try registering again.");
+    return;
+  }
 
-    if (!enteredOTP || enteredOTP.length !== 6) {
-      alert("Please enter a valid 6-digit OTP.");
-      return;
-    }
+  if (!enteredOTP || enteredOTP.length !== 6) {
+    alert("Please enter a valid 6-digit OTP.");
+    return;
+  }
 
-    try {
-      const res = await axios.post(
-        "http://192.168.1.4:4000/api/user/verify-otp",
-        {
-          phone: userPhone,
-          otp: enteredOTP,
-        }
-      );
-
-      if (res.status === 200) {
-        alert(" Registration successful!");
-        localStorage.removeItem("userPhone");
-        // Optional: clear form or navigate user
-      } else {
-        alert("OTP verification failed. Try again.");
+  try {
+    const res = await axios.post(
+      "http://192.168.1.4:4000/api/user/verify-otp",
+      {
+        phone: userPhone,
+        otp: enteredOTP,
       }
-    } catch (error) {
-      alert(" OTP verification failed. Please check the OTP and try again.");
+    );
+
+    if (res.status === 200) {
+      alert("Registration successful!");
+      localStorage.removeItem("userPhone");
+
+      // ✅ Redirect to login page
+      setOpenLogin(true);
+      setFormStep(1);
+    } else {
+      alert("OTP verification failed. Try again.");
     }
-  };
+  } catch (error) {
+    alert("OTP verification failed. Please check the OTP and try again.");
+  }
+};
+
 
   const handleProfileChange = (e) => {
     const file = e.target.files[0];
@@ -184,16 +204,19 @@ const Login = () => {
   }
 
   // Phone validation
-  if (!phone.trim()) {
-    setPhoneError("Phone number is required");
-    isValid = false;
-  } else if (!/^\d{10}$/.test(phone)) {
-    setPhoneError("Phone must be exactly 10 digits");
-    isValid = false;
-  }else if(!phone.length>10){
-     setPhoneError("more than 10 digit not allowed");
-     isValid = false;
-  }
+const requiredLength = phoneLengthByCountry[countryCode] || 10;
+
+if (!phone.trim()) {
+  setPhoneError("Phone number is required");
+  isValid = false;
+} else if (!/^\d+$/.test(phone)) {
+  setPhoneError("Phone must contain only digits");
+  isValid = false;
+} else if (phone.length !== requiredLength) {
+  setPhoneError(`Phone number must be ${requiredLength} digits`);
+  isValid = false;
+}
+
 
   // Gender validation
   if (!gender) {
@@ -256,10 +279,10 @@ const Login = () => {
   // }
 
   
-  // if (formStep === 2) {
-  //   const valid = validateStep2();
-  //   if (!valid) return;
-  // }
+  if (formStep === 2) {
+    const valid = validateStep2();
+    if (!valid) return;
+  }
 
     if (isExistingUser) {
       alert("User already registered with this email or phone.");
@@ -279,6 +302,8 @@ const Login = () => {
     formData.append("district", district);
     formData.append("pincode", pincode);
     formData.append("address", address);
+    formData.append("phone", countryCode + phone);
+
 
     try {
       const response = await axios.post(
@@ -473,13 +498,12 @@ const Login = () => {
                       <div className="mb-3 col-12 col-lg-6">
                         <label>Phone <span className="text-danger">*</span></label>
                         <input
-                          type="tel"
+                          type="number"
                           value={phone}
                           onChange={(e) => {
                             setPhone(e.target.value);
                             setPhoneError(false);
                           }}
-                          maxLength={10}
                           className="form-control shadow-none"
                           placeholder="Enter phone number"
                           required
@@ -649,7 +673,7 @@ const Login = () => {
                 )}
 
                 <div className="mt-2 d-flex justify-content-end gap-2 w-100">
-                  {formStep > 1 && (
+                  {formStep ===2 && (
                     <button
                       type="button"
                       className="border-0 p-2 rounded-4 formbtn"
@@ -658,7 +682,7 @@ const Login = () => {
                       Previous
                     </button>
                   )}
-                  {formStep < 2 && (
+                  {formStep ===1 && (
                     <button
                       type="button"
                       className="border-0 px-3 py-2 formbtn rounded-4"
@@ -676,7 +700,8 @@ const Login = () => {
                     </button>
                   )}
                 </div>
-                <p className="text-success float-end">
+                {formStep<3&&(
+                  <p className="text-success float-end">
                   Already have an account?{" "}
                   <button
                     type="button"
@@ -686,6 +711,8 @@ const Login = () => {
                     Login
                   </button>
                 </p>
+                )}
+               
               </form>
             </div>
           )}
