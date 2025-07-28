@@ -4,6 +4,7 @@ import axios from "axios";
 import Styles from "./Login.module.css";
 import { useNavigate } from "react-router-dom";
 
+
 const Login = () => {
   const [openlogin, setOpenLogin] = useState(false);
   const [formStep, setFormStep] = useState(1);
@@ -13,7 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
-  // const [profile, setProfile] = useState("");
+  const [profile, setProfile] = useState("");
   const [village, setVillage] = useState("");
   const [villageError, setVillageError] = useState("");
   const [country, setCountry] = useState("");
@@ -28,8 +29,8 @@ const Login = () => {
   const [pincodeError, setPincodeError] = useState("");
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
-  // const [farmerId, setFarmerId] = useState("");
-  // const [farmerIdError, setFarmerIdError] = useState("");
+  const [farmerId, setFarmerId] = useState('');
+  const [farmerIdError, setFarmerIdError] = useState('');
   const [isExistingUser, setIsExistingUser] = useState(false);
   // const [checkMessage, setCheckMessage] = useState("");
   const [nameError, setNameError] = useState(false);
@@ -43,88 +44,18 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+
   const phoneLengthByCountry = {
-    "+91": 10, // India
-    "+1": 10, // USA
-    "+44": 10, // UK
-    "+971": 9, // UAE
-    "+61": 9, // Australia
-    "+81": 10, // Japan
+    "+91": 10,   // India
+    "+1": 10,    // USA
+    "+44": 10,   // UK
+    "+971": 9,   // UAE
+    "+61": 9,    // Australia
+    "+81": 10    // Japan
   };
 
-  const countries = [
-  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola",
-  "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
-  "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus",
-  "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
-  "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria",
-  "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada",
-  "Cape Verde", "Central African Republic", "Chad", "Chile", "China",
-  "Colombia", "Comoros", "Congo (Brazzaville)", "Congo (Kinshasa)", "Costa Rica",
-  "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark",
-  "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt",
-  "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini",
-  "Ethiopia", "Fiji", "Finland", "France", "Gabon",
-  "Gambia", "Georgia", "Germany", "Ghana", "Greece",
-  "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
-  "Haiti", "Honduras", "Hungary", "Iceland", "India",
-  "Indonesia", "Iran", "Iraq", "Ireland", "Israel",
-  "Italy", "Ivory Coast", "Jamaica", "Japan", "Jordan",
-  "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan",
-  "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia",
-  "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar",
-  "Malawi", "Malaysia", "Maldives", "Mali", "Malta",
-  "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia",
-  "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco",
-  "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal",
-  "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria",
-  "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan",
-  "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay",
-  "Peru", "Philippines", "Poland", "Portugal", "Qatar",
-  "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
-  "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia",
-  "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore",
-  "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa",
-  "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan",
-  "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan",
-  "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo",
-  "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan",
-  "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
-  "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City",
-  "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-];
+  const States = ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "HimachalPradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"];
 
-
-  const States = [
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chhattisgarh",
-    "Goa",
-    "Gujarat",
-    "Haryana",
-    "HimachalPradesh",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Odisha",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttarakhand",
-    "West Bengal",
-  ];
 
   useEffect(() => {
     if (email || phone) {
@@ -167,7 +98,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "https://78196ee1344b.ngrok-free.app/api/user/check-email",
+        "http://192.168.1.4:4000/api/user/verify-otp",
         {
           phone: userPhone,
           otp: enteredOTP,
@@ -189,13 +120,15 @@ const Login = () => {
     }
   };
 
+
   const handleProfileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfilePreview(file);
+      setProfile(file);
       setProfilePreview(URL.createObjectURL(file)); // creates temporary URL for preview
     }
   };
+
 
   const validateStep2 = () => {
     let isValid = true;
@@ -206,45 +139,44 @@ const Login = () => {
     setVillageError("");
     setPincodeError("");
     setAddressError("");
-    // setFarmerIdError("");
+    setFarmerIdError("");
     if (!country.trim()) {
-      setCountryError("country is required");
+      setNameError("country is required");
       isValid = false;
     }
     if (!state.trim()) {
-      setStateError("state is required");
+      setNameError("state is required");
       isValid = false;
     }
     if (!district.trim()) {
-      setDistrictError("district is required");
+      setNameError("district is required");
       isValid = false;
     }
     if (!city.trim()) {
-      setCityError("city is required");
+      setNameError("city is required");
       isValid = false;
     }
 
     if (!village.trim()) {
-      setVillageError("village is required");
+      setNameError("village is required");
       isValid = false;
     }
 
     if (!pincode.trim()) {
-      setPincodeError("pincode is required");
+      setNameError("pincode is required");
       isValid = false;
     }
 
     if (!address.trim()) {
-      setAddressError("address is required");
+      setNameError("address is required");
       isValid = false;
     }
 
-    // if (!farmerId.trim()) {
-    //   setFarmerIdError("Id is required");
-    //   isValid = false;
-    // }
-    return isValid;
-  };
+    if (!id.trim()) {
+      setNameError("Id is required");
+      isValid = false;
+    }
+  }
 
   const validateStep = () => {
     let isValid = true;
@@ -288,6 +220,7 @@ const Login = () => {
       isValid = false;
     }
 
+
     // Gender validation
     if (!gender) {
       setGenderError("Please select a gender");
@@ -303,9 +236,7 @@ const Login = () => {
       setPasswordError("Password is required");
       isValid = false;
     } else if (password.length < 8 || !hasLetter || !hasNumber || !hasSpecial) {
-      setPasswordError(
-        "Must be 8+ characters with letter, number & special char"
-      );
+      setPasswordError("Must be 8+ characters with letter, number & special char");
       isValid = false;
     }
 
@@ -350,6 +281,7 @@ const Login = () => {
     //   return;
     // }
 
+
     if (formStep === 2) {
       const valid = validateStep2();
       if (!valid) return;
@@ -364,19 +296,21 @@ const Login = () => {
     formData.append("name", name);
     formData.append("email", email);
     formData.append("password", password);
+    formData.append("phone", phone);
     formData.append("gender", gender);
-    formData.append("profilePreview", profilePreview);
+    formData.append("profileImage", profile);
     formData.append("village", village);
     formData.append("state", state);
-    // formData.append("farmerId", farmerId);
+    formData.append("farmerId", farmerId);
     formData.append("district", district);
     formData.append("pincode", pincode);
     formData.append("address", address);
     formData.append("phone", countryCode + phone);
 
+
     try {
       const response = await axios.post(
-        "https://78196ee1344b.ngrok-free.app/api/user/register",
+        "https://c24a05a1f47e.ngrok-free.app/api/user/register",
         formData,
         {
           headers: {
@@ -398,17 +332,15 @@ const Login = () => {
     <div className="container-fluid maincontainer">
       <div className="text-center mb-3 mr-2">
         <button
-          className={`border-0 borderchng px-5 py-3 ${
-            openlogin ? "bg-success text-white" : "btn-light"
-          }`}
+          className={`border-0 borderchng px-5 py-3 ${openlogin ? "bg-success text-white" : "btn-light"
+            }`}
           onClick={() => setOpenLogin(true)}
         >
           Login
         </button>
         <button
-          className={`px-5 border-0 borderchng2 py-3 ${
-            !openlogin ? "bg-success text-white" : "btn-light"
-          }`}
+          className={`px-5 border-0 borderchng2 py-3 ${!openlogin ? "bg-success text-white" : "btn-light"
+            }`}
           onClick={() => {
             setOpenLogin(false);
             setFormStep(1);
@@ -420,13 +352,12 @@ const Login = () => {
 
       <div className="row w-100 justify-content-center">
         <div
-          className={`mt-1 ${
-            !openlogin ? "col-md-8 col-lg-8" : "col-md-6 col-lg-5"
-          }`}
+          className={`mt-1 ${!openlogin ? "col-md-8 col-lg-8" : "col-md-6 col-lg-5"
+            }`}
         >
           {openlogin ? (
             <form>
-              <div className="row w-100 ms-3 changeBg">
+              <div className="row w-100 changeBg">
                 <div className="col-12 col-xl-12 mb-2">
                   <label htmlFor="email">Email/Phone</label>
                   <input
@@ -464,18 +395,18 @@ const Login = () => {
               </div>
             </form>
           ) : (
-            <div className="row changeBg ms-3 signupdiv">
-              <form onSubmit={handleSubmit} className="h-100">
+            <div className="row changeBg">
+              <form onSubmit={handleSubmit}>
                 {formStep === 1 && (
                   <>
-                    <div className="d-flex align-items-center h-100 justify-content-center">
-                      <h5 className="bg-success text-white rounded-4 p-2 w-50 fs-3 text-center">
+                    <div className="d-flex align-items-center justify-content-center">
+                      <h5 className="bg-success text-white rounded-4 p-3 w-25 fs-4 text-center">
                         Personal details
                       </h5>
                     </div>
                     <div className="row">
-                      <div className="text-center col-12">
-                        <label htmlFor="images">
+                      <div className="text-center">
+                        <label htmlFor="profileInput">
                           <div
                             style={{
                               width: "100px",
@@ -508,24 +439,18 @@ const Login = () => {
                         <input
                           type="file"
                           accept="image/*"
-                          name="images"
                           onChange={handleProfileChange}
-                          id="images"
+                          id="profileInput"
                           style={{ display: "none" }}
                         />
                       </div>
 
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>
-                          Name <span className="text-danger">*</span>
-                        </label>
+                        <label>Name <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={name}
-                          onChange={(e) => {
-                            setName(e.target.value);
-                            setNameError(false);
-                          }}
+                          onChange={(e) => { setName(e.target.value); setNameError(false) }}
                           className="form-control shadow-none"
                           placeholder="Enter name"
                         />
@@ -540,10 +465,7 @@ const Login = () => {
                         <input
                           type="email"
                           value={email}
-                          onChange={(e) => {
-                            setEmail(e.target.value);
-                            setEmailError(false);
-                          }}
+                          onChange={(e) => { setEmail(e.target.value); setEmailError(false) }}
                           className="form-control shadow-none"
                           name="email"
                           id="email"
@@ -568,13 +490,13 @@ const Login = () => {
                           placeholder="Enter password"
                         />
                         {passwordError && (
-                          <small className="text-danger">{passwordError}</small>
+                          <small className="text-danger">
+                            {passwordError}
+                          </small>
                         )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>
-                          Phone <span className="text-danger">*</span>
-                        </label>
+                        <label>Phone <span className="text-danger">*</span></label>
                         <div className="input-group">
                           <select
                             className="form-select shadow-none"
@@ -586,18 +508,15 @@ const Login = () => {
                             <option value="+1">🇺🇸(+1)</option>
                             <option value="+44">🇬🇧(+44)</option>
                             <option value="+971">🇦🇪(+971)</option>
-                            <option value="+61">🇦🇺 (+61)</option>
+                            <option value="+61">🇦🇺  (+61)</option>
                             <option value="+81">🇯🇵 (+81)</option>
                           </select>
                           <input
                             type="tel"
                             value={phone}
                             onChange={(e) => {
-                              const maxLength =
-                                phoneLengthByCountry[countryCode] || 10;
-                              const input = e.target.value
-                                .replace(/\D/g, "")
-                                .slice(0, maxLength); // only digits
+                              const maxLength = phoneLengthByCountry[countryCode] || 10;
+                              const input = e.target.value.replace(/\D/g, "").slice(0, maxLength); // only digits
                               setPhone(input);
                               setPhoneError(false);
                             }}
@@ -613,15 +532,10 @@ const Login = () => {
                       </div>
 
                       <div className="mb-3 col-12 col-lg-5 m-auto">
-                        <label>
-                          Gender <span className="text-danger">*</span>
-                        </label>
+                        <label>Gender <span className="text-danger">*</span></label>
                         <select
                           value={gender}
-                          onChange={(e) => {
-                            setGender(e.target.value);
-                            setGenderError(false);
-                          }}
+                          onChange={(e) => { setGender(e.target.value); setGenderError(false) }}
                           className="form-control shadow-none"
                         >
                           <option value="">Select Gender</option>
@@ -630,9 +544,7 @@ const Login = () => {
                           <option value="other">OTHER</option>
                         </select>
                         {genderError && (
-                          <small className="text-danger">
-                            {setGenderError}
-                          </small>
+                          <small className="text-danger">{setGenderError}</small>
                         )}
                       </div>
                     </div>
@@ -647,54 +559,37 @@ const Login = () => {
                       </h5>
                     </div>
                     <div className="row">
-                     <div className="mb-0 col-12 col-lg-6">
-                        <label htmlFor="country">
-                          Country <span className="text-danger">*</span>
-                        </label>
-                        <br />
-                        <select
-                          name="country"
-                          className=" w-100 p-2 border rounded-3 shadow-none custom-select "
+                      <div className="mb-3 col-12 col-lg-6">
+                        <label>Country <span className="text-danger">*</span></label>
+                        <input
+                          type="text"
                           value={country}
-                          onChange={(e) => {
-                            setCountry(e.target.value);
-                            setCountryError(false);
-                          }}
-                        >
-                          <option value="">Select Country</option>
-                          {countries.map((countryName, index) => (
-                            <option key={index} value={countryName}>
-                              {countryName}
-                            </option>
-                             
-                          ))}
-                        </select>
+                          onChange={(e) => { setCountry(e.target.value); setCountryError(false) }}
+                          className="form-control shadow-none"
+                          placeholder="Enter country"
+                        />
                         {countryError && (
                           <small className="text-danger">{countryError}</small>
                         )}
                       </div>
                       <div className="mb-0 col-12 col-lg-6">
-                        <label htmlFor="state">
-                          State <span className="text-danger">*</span>
-                        </label>
-                        <br />
+                        <label htmlFor="state">State <span className="text-danger">*</span></label><br />
                         <select
-                          name="state"
-                          className=" w-100 p-2 border rounded-3 shadow-none custom-select "
-                          value={state}
-                          onChange={(e) => {
-                            setState(e.target.value);
-                            setStateError(false);
-                          }}
-                        >
-                          <option value="">Select State</option>
-                          {States.map((stateName, index) => (
-                            <option key={index} value={stateName}>
-                              {stateName}
-                            </option>
-                             
-                          ))}
-                        </select>
+  name="state"
+  className="form-control p-2 border rounded-3 shadow-none custom-select "
+  value={state}
+  onChange={(e) => {
+    setState(e.target.value);
+    setStateError(false);
+  }}
+>
+  <option value="">Select State</option> 
+  {States.map((stateName, index) => (
+    <option key={index} value={stateName}>
+      {stateName}
+    </option>
+  ))}
+</select>
 
                         {/* <input
                           type="text"
@@ -708,16 +603,11 @@ const Login = () => {
                         )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>
-                          District <span className="text-danger">*</span>
-                        </label>
+                        <label>District <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={district}
-                          onChange={(e) => {
-                            setDistrict(e.target.value);
-                            setDistrictError(false);
-                          }}
+                          onChange={(e) => { setDistrict(e.target.value); setDistrictError(false) }}
                           className="form-control shadow-none"
                           placeholder="Enter district"
                         />
@@ -726,16 +616,11 @@ const Login = () => {
                         )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>
-                          City <span className="text-danger">*</span>
-                        </label>
+                        <label>City <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={city}
-                          onChange={(e) => {
-                            setCity(e.target.value);
-                            setCityError(false);
-                          }}
+                          onChange={(e) => { setCity(e.target.value); setCityError(false) }}
                           className="form-control shadow-none"
                           placeholder="Enter city"
                         />
@@ -744,16 +629,11 @@ const Login = () => {
                         )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>
-                          Village <span className="text-danger">*</span>
-                        </label>
+                        <label>Village <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={village}
-                          onChange={(e) => {
-                            setVillage(e.target.value);
-                            setVillageError(false);
-                          }}
+                          onChange={(e) => { setVillage(e.target.value); setVillageError(false) }}
                           className="form-control shadow-none"
                           placeholder="Enter village"
                         />
@@ -762,16 +642,11 @@ const Login = () => {
                         )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>
-                          Pincode <span className="text-danger">*</span>
-                        </label>
+                        <label>Pincode <span className="text-danger">*</span></label>
                         <input
-                          type="number"
+                          type="text"
                           value={pincode}
-                          onChange={(e) => {
-                            setPincode(e.target.value);
-                            setPincodeError(false);
-                          }}
+                          onChange={(e) => { setPincode(e.target.value); setPincodeError(false) }}
                           className="form-control shadow-none"
                           placeholder="Enter pincode"
                         />
@@ -780,16 +655,11 @@ const Login = () => {
                         )}
                       </div>
                       <div className="mb-3 col-12 col-lg-6">
-                        <label>
-                          Address <span className="text-danger">*</span>
-                        </label>
+                        <label>Address <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={address}
-                          onChange={(e) => {
-                            setAddress(e.target.value);
-                            setAddressError(false);
-                          }}
+                          onChange={(e) => { setAddress(e.target.value); setAddressError(false) }}
                           className="form-control shadow-none"
                           placeholder="Enter address"
                         />
@@ -797,24 +667,19 @@ const Login = () => {
                           <small className="text-danger">{addressError}</small>
                         )}
                       </div>
-                      {/* <div className="mb-3 col-12 col-lg-6">
-                        <label>
-                          Farmer ID <span className="text-danger">*</span>
-                        </label>
+                      <div className="mb-3 col-12 col-lg-6">
+                        <label>Farmer ID <span className="text-danger">*</span></label>
                         <input
                           type="text"
                           value={farmerId}
-                          onChange={(e) => {
-                            setFarmerId(e.target.value);
-                            setFarmerIdError(false);
-                          }}
+                          onChange={(e) => { setFarmerId(e.target.value); setFarmerIdError(false) }}
                           className="form-control shadow-none"
                           placeholder="Enter farmer ID"
                         />
                         {farmerIdError && (
                           <small className="text-danger">{farmerIdError}</small>
                         )}
-                      </div> */}
+                      </div>
                     </div>
                   </>
                 )}
@@ -832,7 +697,6 @@ const Login = () => {
                     />
                     <br />
                     <button
-                    
                       type="button"
                       className="btn bg-success text-white"
                       onClick={handleOTPVerify}
@@ -861,31 +725,12 @@ const Login = () => {
                       Next
                     </button>
                   )}
-                   {formStep === 1 && (
-                    <button
-                      type="button"
-                      className="border-0 p-2 formbtn rounded-4"
-onClick={() => setFormStep(3)}
-                    >
-                      Verify
-                    </button>
-                  )}
                   {formStep === 2 && (
                     <button
                       type="submit"
                       className="border-0 p-2 formbtn rounded-4"
                     >
                       Submit
-                    </button>
-                  )}
-
-                   {formStep === 2 && (
-                    <button
-                      type="button"
-                      className="border-0 p-2 formbtn rounded-4"
-                      onClick={() => setFormStep(3)}
-                    >
-                      Verify
                     </button>
                   )}
                 </div>
@@ -901,6 +746,7 @@ onClick={() => setFormStep(3)}
                     </button>
                   </p>
                 )}
+
               </form>
             </div>
           )}

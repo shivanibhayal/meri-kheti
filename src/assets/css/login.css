@@ -1,6 +1,6 @@
 
 .maincontainer{
-    margin-top: 7rem;
+    margin-top: 3rem;
 }
 .borderchng{
     border-top-left-radius: 60px;
@@ -21,7 +21,7 @@
       transition: all 1s;
 }
 .loginmaindiv{
-    margin-top: 90px;
+    margin-top: 10px;
 }
 .formbtn{
     background-color:  #198754 !important;
@@ -49,5 +49,16 @@ color: white;
 font-size: 60px;
 }
 
-
-
+/* Add this CSS */
+/* .custom-select {
+  appearance: none; 
+  /* removes default browser style */
+  /* background: url('data:image/svg+xml;utf8,<svg fill="gray" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 1rem center;
+  background-color: white;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+ */ 
+.signupdiv{
+max-height: 100%;
+}
