@@ -1,7 +1,4 @@
 
-.maincontainer{
-    margin-top: 7rem;
-}
 .borderchng{
     border-top-left-radius: 60px;
 }
@@ -21,7 +18,7 @@
       transition: all 1s;
 }
 .loginmaindiv{
-    margin-top: 90px;
+    margin-top: 60px;
 }
 .formbtn{
     background-color:  #198754 !important;
@@ -48,6 +45,8 @@ color: white;
 .bi-person-circle{
 font-size: 60px;
 }
+
+
 
 
 
