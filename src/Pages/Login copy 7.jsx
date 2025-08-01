@@ -39,7 +39,7 @@ const Login = () => {
   const [genderError, setGenderError] = useState(false);
   const [profilePreview, setProfilePreview] = useState(false);
 
-  const [countryCode, setCountryCode] = useState(" ");
+  const [countryCode, setCountryCode] = useState("+91");
 
 const [loginEmail,setLoginEmail]=useState("");
 const [loginEmailError,setLoginEmailError]=useState("");
@@ -47,7 +47,16 @@ const[loginPassword,setLoginPassword]=useState("");
 const[loginPasswordError,setLoginPasswordError]=useState("");
  const [resendOtp, setResendOtp] = useState("");
   const navigate = useNavigate();
- 
+
+  const phoneLengthByCountry = {
+    "+91": 10, // India
+    "+1": 10, // USA
+    "+44": 10, // UK
+    "+971": 9, // UAE
+    "+61": 9, // Australia
+    "+81": 10, // Japan
+  };
+
   const countries = [
   "Afghanistan", "Albania", "Algeria", "Andorra", "Angola",
   "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
@@ -90,14 +99,6 @@ const[loginPasswordError,setLoginPasswordError]=useState("");
   "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
 ];
 
-  const phoneLengthByCountry = {
-    "+91": 10, // India
-    "+1": 10, // USA
-    "+44": 10, // UK
-    "+971": 9, // UAE
-    "+61": 9, // Australia
-    "+81": 10, // Japan
-  };
 
   const States = [
     "Andhra Pradesh",
@@ -167,13 +168,13 @@ const[loginPasswordError,setLoginPasswordError]=useState("");
 
  const handleOTPVerify = async () => {
   // const userPhone = localStorage.getItem("userPhone");
-   
-  const enterContryCode = document.getElementById("countryCode").value;
-  const enterPhone = document.getElementById("phone").value;
-  const enteredOTP = document.getElementById("otp").value;
+ 
 
- const countryCodeAdd =  enterContryCode + enterPhone;
- alert(countryCodeAdd);
+  // if (!userPhone) {
+  //   alert("Phone number not found. Please register again.");
+  //   return;
+  // }
+
   if (!enteredOTP || enteredOTP.length !== 6) {
     alert("Please enter a valid 6-digit OTP.");
     return;
@@ -183,11 +184,10 @@ const[loginPasswordError,setLoginPasswordError]=useState("");
     const res = await axios.post(
       "http://192.168.1.2:3000/api/user/verifyotp", 
       {
-        phone: countryCodeAdd,
+        phone: phone,
         otp: enteredOTP,
       }
     );
-    alert(res.data.phone);
 
     if (res.status === 200 && res.data.success) {
       alert("Registration successful!");
@@ -711,6 +711,7 @@ return isValid;
                             maxLength={phoneLengthByCountry[countryCode] || 10}
                             className="form-control shadow-none"
                             placeholder="Enter phone number"
+                            required
                           />
                         </div>
                         {phoneError && (
@@ -931,7 +932,6 @@ return isValid;
                       OTP Verification
                     </h5>
                     
-                    <input id="countryCode" value={countryCode} hidden type="number" />
                     <input id="phone" value={phone} hidden type="number" />
                    
                     <input id="otp" type="text" className="p-2 mb-3 rounded" placeholder="Enter 6 digit OTP" />

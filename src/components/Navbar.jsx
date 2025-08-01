@@ -56,6 +56,17 @@ const Navbar = () => {
           id="navbarSupportedContent"
         >
           <ul className="navbar-nav ms-auto mb-2 gap-2 mb-lg-0 fw-bold">
+
+ {openSearch ? (
+        <form className="position-absolute w-100 h-100 shadow p-4 top-0 start-0 z-0">
+          <div className='d-flex justify-content-center position-relative align-items-center gap-3' style={{ maxWidth: "500px", margin: "auto" }}>
+            <input type="text" placeholder='Search merikheti' className={`form-control ps-5 ${styles.input}`} />
+            <CiSearch className='fs-2 fw-bold position-absolute start-0  ps-2 text-muted' />
+            <IoClose className='fs-4 text-success' style={{ cursor: "pointer" }} onClick={closeSearch} />
+          </div>
+        </form>
+      ):(
+<>
             <li className={`nav-item dropdown ${styles.hoverDropdown} ${styles.liHover}`}>
               <a className="nav-link dropdown-toggle" href="#">Crops</a>
               <ul className="dropdown-menu">
@@ -125,20 +136,14 @@ const Navbar = () => {
                 <button className={`btn bg-success ms-2 text-none navloginbtn mt-1 px-3 ${styles.navLoginBtn}`}>Login</button>
               </Link>
             </li>
+             </>
+)}
           </ul>
         </div>
       </div>
 
       {/* Search Form (overlay-like) */}
-      {openSearch && (
-        <form className="position-absolute w-100 bg-white shadow p-2 top-100 start-0 z-3">
-          <div className='d-flex justify-content-center position-relative align-items-center gap-3' style={{ maxWidth: "800px", margin: "auto" }}>
-            <input type="text" placeholder='Search merikheti' className={`form-control ps-5 ${styles.input}`} />
-            <CiSearch className='fs-2 fw-bold position-absolute start-0  ps-2 text-muted' />
-            <IoClose className='fs-4 text-success' style={{ cursor: "pointer" }} onClick={closeSearch} />
-          </div>
-        </form>
-      )}
+     
     </nav>
   );
 };

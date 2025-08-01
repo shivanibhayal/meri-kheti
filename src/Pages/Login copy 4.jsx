@@ -39,7 +39,7 @@ const Login = () => {
   const [genderError, setGenderError] = useState(false);
   const [profilePreview, setProfilePreview] = useState(false);
 
-  const [countryCode, setCountryCode] = useState(" ");
+  const [countryCode, setCountryCode] = useState("+91");
 
 const [loginEmail,setLoginEmail]=useState("");
 const [loginEmailError,setLoginEmailError]=useState("");
@@ -47,7 +47,16 @@ const[loginPassword,setLoginPassword]=useState("");
 const[loginPasswordError,setLoginPasswordError]=useState("");
  const [resendOtp, setResendOtp] = useState("");
   const navigate = useNavigate();
- 
+
+  const phoneLengthByCountry = {
+    "+91": 10, // India
+    "+1": 10, // USA
+    "+44": 10, // UK
+    "+971": 9, // UAE
+    "+61": 9, // Australia
+    "+81": 10, // Japan
+  };
+
   const countries = [
   "Afghanistan", "Albania", "Algeria", "Andorra", "Angola",
   "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
@@ -90,14 +99,6 @@ const[loginPasswordError,setLoginPasswordError]=useState("");
   "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
 ];
 
-  const phoneLengthByCountry = {
-    "+91": 10, // India
-    "+1": 10, // USA
-    "+44": 10, // UK
-    "+971": 9, // UAE
-    "+61": 9, // Australia
-    "+81": 10, // Japan
-  };
 
   const States = [
     "Andhra Pradesh",
@@ -136,74 +137,72 @@ const[loginPasswordError,setLoginPasswordError]=useState("");
   //   }
   // }, [email, phone]);
 
-//  const checkIfUserExists = async () => {
-//   if (!email) return;
-
-//   try {
-//  const res = await axios.get(
-//   "http://192.168.1.4:3000/api/user/check-email",
-//   { params: { email } }
-// );
-
-//     const { available, message } = res.data;
-//     console.log("API Success:", res.data);
-
-//     if (available === true) {
-//       setIsExistingUser(false);
-//       setCheckMessage(""); // Email is available
-//     } else {
-//       setIsExistingUser(true);
-//       setCheckMessage(message || "Email is already in use");
-//     }
-//   } catch (err) {
-//     const message = err.response?.data?.message || "Server error. Try again.";
-//     console.error(" API Error:", message);
-
-//     setIsExistingUser(true);
-//     setCheckMessage(message);
-//   }
-// };
-
-
- const handleOTPVerify = async () => {
-  // const userPhone = localStorage.getItem("userPhone");
-   
-  const enterContryCode = document.getElementById("countryCode").value;
-  const enterPhone = document.getElementById("phone").value;
-  const enteredOTP = document.getElementById("otp").value;
-
- const countryCodeAdd =  enterContryCode + enterPhone;
- alert(countryCodeAdd);
-  if (!enteredOTP || enteredOTP.length !== 6) {
-    alert("Please enter a valid 6-digit OTP.");
-    return;
-  }
+ const checkIfUserExists = async () => {
+  if (!email) return;
 
   try {
-    const res = await axios.post(
-      "http://192.168.1.2:3000/api/user/verifyotp", 
-      {
-        phone: countryCodeAdd,
-        otp: enteredOTP,
-      }
+    const res = await axios.get(
+      "https://4496a2b22931.ngrok-free.app/api/user/check-email?",
+      { params: { email } }
     );
-    alert(res.data.phone);
 
-    if (res.status === 200 && res.data.success) {
-      alert("Registration successful!");
-      // localStorage.removeItem("userPhone");
+    const { available, message } = res.data;
+    console.log("✅ API Success:", res.data);
 
-      // Redirect to login or next step
-      setOpenLogin(true);
-      setFormStep(1);
+    if (available === true) {
+      setIsExistingUser(false);
+      setCheckMessage(""); // Email is available
     } else {
-      alert(res.data.message || "OTP verification failed. Try again.");
+      setIsExistingUser(true);
+      setCheckMessage(message || "Email is already in use");
     }
-  } catch (error) {
-    console.error("OTP verification error:", error);
-    alert("OTP verification failed. Please try again.");
+  } catch (err) {
+    const message = err.response?.data?.message || "Server error. Try again.";
+    console.error("❌ API Error:", message);
+
+    setIsExistingUser(true);
+    setCheckMessage(message);
   }
 };
+
+
+  const handleOTPVerify = async () => {
+    const userPhone = localStorage.getItem("userPhone");
+    const enteredOTP = document.getElementById("otp")?.value;
+
+    if (!userPhone) {
+      alert("Phone number not found. Please try registering again.");
+      return;
+    }
+
+    if (!enteredOTP || enteredOTP.length !== 6) {
+      alert("Please enter a valid 6-digit OTP.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        "https://78196ee1344b.ngrok-free.app/api/user/check-email",
+        {
+          phone: userPhone,
+          otp: enteredOTP,
+        }
+      );
+
+      if (res.status === 200) {
+        alert("Registration successful!");
+        localStorage.removeItem("userPhone");
+
+        //  Redirect to login page
+        setOpenLogin(true);
+        setFormStep(1);
+      } else {
+        alert("OTP verification failed. Try again.");
+      }
+    } catch (error) {
+      alert("OTP verification failed. Please check the OTP and try again.");
+    }
+  };
 
 
   const handleResendOtp=({phone})=>{
@@ -426,23 +425,23 @@ return isValid;
       if (!valid) return;
     }
 
-  //    if (formStep === 1) {
-  //   try {
-  //     await axios.get("https://7a7ab1a286e4.ngrok-free.app/api/user/check-email", {
-  //       email,
-  //       phone: countryCode + phone,
-  //     });
-  //     // If no error, continue
-  //   } catch (err) {
-  //     if (err.response?.status === 409) {
-  //       alert("User already registered with this email or phone.");
-  //       return false; // Stop submission
-  //     } else {
-  //       alert("Something went wrong. Please try again.");
-  //       return false;
-  //     }
-  //   }
-  // }
+     if (formStep === 1) {
+    try {
+      await axios.get("https://7a7ab1a286e4.ngrok-free.app/api/user/check-email", {
+        email,
+        phone: countryCode + phone,
+      });
+      // If no error, continue
+    } catch (err) {
+      if (err.response?.status === 409) {
+        alert("User already registered with this email or phone.");
+        return false; // Stop submission
+      } else {
+        alert("Something went wrong. Please try again.");
+        return false;
+      }
+    }
+  }
 
 
     const formData = new FormData();
@@ -461,7 +460,7 @@ return isValid;
 
     try {
       const response = await axios.post(
-        "http://192.168.1.2:3000/api/user/register",
+        "https://78196ee1344b.ngrok-free.app/api/user/register",
         formData,
         {
           headers: {
@@ -470,7 +469,7 @@ return isValid;
         }
       );
       alert("otp sent");
-      // localStorage.setItem("userPhone", phone);
+      localStorage.setItem("userPhone", phone);
       setFormStep(3); // Go to OTP
 
       // setFormStep(3); // move to OTP step
@@ -647,7 +646,7 @@ return isValid;
                             setEmail(e.target.value);
                             setEmailError(false);
                           }}
-                          // onBlur={checkIfUserExists}
+                          onBlur={checkIfUserExists}
                           className="form-control shadow-none"
                           name="email"
                           id="email"
@@ -711,6 +710,7 @@ return isValid;
                             maxLength={phoneLengthByCountry[countryCode] || 10}
                             className="form-control shadow-none"
                             placeholder="Enter phone number"
+                            required
                           />
                         </div>
                         {phoneError && (
@@ -930,11 +930,12 @@ return isValid;
                     <h5 className="bg-success text-white rounded-4 m-auto mb-3 p-3 w-25 text-center">
                       OTP Verification
                     </h5>
-                    
-                    <input id="countryCode" value={countryCode} hidden type="number" />
-                    <input id="phone" value={phone} hidden type="number" />
-                   
-                    <input id="otp" type="text" className="p-2 mb-3 rounded" placeholder="Enter 6 digit OTP" />
+                    <input
+                      id="otp"
+                      type="text"
+                      className="p-2 mb-3 rounded"
+                      placeholder="Enter 6 digit OTP"
+                    />
                     <br />
                     <button
                     
